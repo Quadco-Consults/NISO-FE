@@ -1,6 +1,7 @@
 'use client';
 
 import { Bell, Menu, Search, User } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
@@ -17,8 +18,14 @@ import { useAuthStore } from '@/lib/store/auth-store';
 import { getInitials } from '@/lib/utils/formatters';
 
 export function Header() {
+  const router = useRouter();
   const { toggleSidebar } = useUIStore();
   const { user, logout } = useAuthStore();
+
+  const handleLogout = () => {
+    logout();
+    router.push('/');
+  };
 
   return (
     <header className="sticky top-0 z-30 flex h-16 items-center gap-4 border-b bg-white px-6">
@@ -75,7 +82,7 @@ export function Header() {
           </DropdownMenuItem>
           <DropdownMenuItem>Settings</DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={logout}>Log out</DropdownMenuItem>
+          <DropdownMenuItem onClick={handleLogout}>Log out</DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     </header>
