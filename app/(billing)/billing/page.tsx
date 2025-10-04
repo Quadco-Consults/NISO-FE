@@ -25,10 +25,21 @@ import { Plus, Search, Download, Eye } from 'lucide-react';
 import { mockInvoices } from '@/server/services/mock-data';
 import { formatCurrency, formatDate, getStatusColor } from '@/lib/utils/formatters';
 import { INVOICE_TYPES } from '@/lib/constants';
+import { InvoiceViewModal } from '@/components/features/billing/invoice-view-modal';
+import { CreateInvoiceModal } from '@/components/features/billing/create-invoice-modal';
+import type { Invoice } from '@/types';
 
 export default function BillingPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('all');
+  const [selectedInvoice, setSelectedInvoice] = useState<Invoice | null>(null);
+  const [isViewModalOpen, setIsViewModalOpen] = useState(false);
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+
+  const handleViewInvoice = (invoice: Invoice) => {
+    setSelectedInvoice(invoice);
+    setIsViewModalOpen(true);
+  };
 
   const filteredInvoices = mockInvoices.filter((invoice) => {
     const matchesSearch =
@@ -57,7 +68,7 @@ export default function BillingPage() {
               Manage invoices and billing operations
             </p>
           </div>
-          <Button className="gap-2">
+          <Button className="gap-2" onClick={() => setIsCreateModalOpen(true)}>
             <Plus className="h-4 w-4" />
             Create Invoice
           </Button>
@@ -180,7 +191,11 @@ export default function BillingPage() {
                       </Badge>
                     </TableCell>
                     <TableCell className="text-right">
-                      <Button variant="ghost" size="sm">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => handleViewInvoice(invoice)}
+                      >
                         <Eye className="h-4 w-4" />
                       </Button>
                     </TableCell>
@@ -191,6 +206,17 @@ export default function BillingPage() {
           </CardContent>
         </Card>
       </div>
+
+      <InvoiceViewModal
+        invoice={selectedInvoice}
+        open={isViewModalOpen}
+        onClose={() => setIsViewModalOpen(false)}
+      />
+
+      <CreateInvoiceModal
+        open={isCreateModalOpen}
+        onClose={() => setIsCreateModalOpen(false)}
+      />
     </MainLayout>
   );
 }
