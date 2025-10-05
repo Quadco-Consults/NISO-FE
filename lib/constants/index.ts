@@ -161,10 +161,52 @@ export const NAVIGATION = [
     roles: ['super_admin', 'admin', 'finance_manager'],
   },
   {
+    title: 'Payment Mapping',
+    href: '/payment-mapping',
+    icon: 'Link2',
+    roles: ['super_admin', 'admin', 'finance_manager'],
+  },
+  {
     title: 'Collections',
     href: '/collections',
     icon: 'AlertCircle',
     roles: ['super_admin', 'admin', 'debt_collector', 'finance_manager'],
+  },
+  {
+    title: 'Service Providers',
+    href: '/service-providers',
+    icon: 'Building2',
+    roles: ['super_admin', 'admin', 'finance_manager'],
+  },
+  {
+    title: 'Disbursements',
+    href: '/disbursements',
+    icon: 'Send',
+    roles: ['super_admin', 'admin', 'finance_manager'],
+  },
+  {
+    title: 'Treasury',
+    href: '/treasury',
+    icon: 'Wallet',
+    roles: ['super_admin', 'admin', 'finance_manager'],
+  },
+  {
+    title: 'Bank Accounts',
+    href: '/bank-accounts',
+    icon: 'Building',
+    roles: ['super_admin', 'admin', 'finance_manager'],
+  },
+  {
+    title: 'Reconciliation',
+    href: '/reconciliation',
+    icon: 'CheckCircle2',
+    roles: ['super_admin', 'admin', 'finance_manager'],
+  },
+  {
+    title: 'Risk Management',
+    href: '/risk-management',
+    icon: 'Shield',
+    roles: ['super_admin', 'admin', 'finance_manager'],
   },
   {
     title: 'Finance',
@@ -177,6 +219,12 @@ export const NAVIGATION = [
     href: '/reports',
     icon: 'BarChart',
     roles: ['all'],
+  },
+  {
+    title: 'Audit Trail',
+    href: '/audit-trail',
+    icon: 'FileSearch',
+    roles: ['super_admin', 'admin'],
   },
   {
     title: 'Settings',

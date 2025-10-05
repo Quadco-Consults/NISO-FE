@@ -18,6 +18,14 @@ import {
   BarChart,
   Settings,
   Menu,
+  Link2,
+  Building2,
+  Send,
+  Wallet,
+  Building,
+  CheckCircle2,
+  Shield,
+  FileSearch,
 } from 'lucide-react';
 import { useUIStore } from '@/lib/store/ui-store';
 import { useAuthStore } from '@/lib/store/auth-store';
@@ -35,6 +43,14 @@ const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   DollarSign,
   BarChart,
   Settings,
+  Link2,
+  Building2,
+  Send,
+  Wallet,
+  Building,
+  CheckCircle2,
+  Shield,
+  FileSearch,
 };
 
 export function Sidebar() {
