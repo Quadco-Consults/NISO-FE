@@ -312,18 +312,6 @@ export default function BilateralStatementDetailPage() {
               <div><div className="font-semibold mb-2">Duly Authorised Signature:</div><div className="border-b-2 border-black h-16 mb-2"></div></div>
               <div><div className="font-semibold mb-2">Date:</div><div className="border-b-2 border-black h-16 mb-2"></div></div>
             </div>
-
-            {/* Explanatory Notes */}
-            {statement.explanatoryNotes.length > 0 && (
-              <div className="mt-8">
-                <div className="bg-black text-white p-3 text-center font-bold mb-4">Explanatory Notes to Invoice</div>
-                <ol className="space-y-3 text-sm">
-                  {statement.explanatoryNotes.map((note, index) => (
-                    <li key={index} className="flex gap-2"><span className="font-semibold">{index + 1}.</span><span>{note}</span></li>
-                  ))}
-                </ol>
-              </div>
-            )}
           </div>
         </TabsContent>
       </Tabs>

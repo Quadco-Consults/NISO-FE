@@ -54,33 +54,18 @@ function numberToWordsNGN(num: number): string {
   return result;
 }
 
-// Mock bilateral trades for June 2025 statement
+// Mock bilateral trades for June 2025 statement - Reduced to 10 items
 const JUNE_2025_BILATERAL_TRADES: BilateralTrade[] = [
-  { id: '1', buyer: 'SBEE', seller: 'IKEJA_I(PARAS)', sellerCode: 'IKEJA_I(PARAS)', currency: 'USD', amount: 77584.55 },
-  { id: '2', buyer: 'SBEE', seller: 'DELTA_1(UGHELLI)', sellerCode: 'DELTA_1(UGHELLI)', currency: 'USD', amount: 74622.71 },
-  { id: '3', buyer: 'SBEE', seller: 'AFAM_3', sellerCode: 'AFAM_3', currency: 'USD', amount: 7057.79 },
-  { id: '4', buyer: 'CEET', seller: 'ODUKPANI_I(CALABAR)', sellerCode: 'ODUKPANI_I(CALABAR)', currency: 'USD', amount: 40019.04 },
-  { id: '5', buyer: 'SUNFLAG', seller: 'ODUKPANI_I(CALABAR)', sellerCode: 'ODUKPANI_I(CALABAR)', currency: 'USD', amount: 255451.10 },
-  { id: '6', buyer: 'IVENWOOD', seller: 'OMOTOSHO_2', sellerCode: 'OMOTOSHO_2', currency: 'NGN', amount: 2038038.07 },
-  { id: '7', buyer: 'INNER GALAXY', seller: 'KAINJI', sellerCode: 'KAINJI', currency: 'NGN', amount: 15078357.08 },
-  { id: '8', buyer: 'KAM INDUSTRIES', seller: 'KAINJI', sellerCode: 'KAINJI', currency: 'NGN', amount: 414349.88 },
-  { id: '9', buyer: 'UNILEVER', seller: 'KAINJI', sellerCode: 'KAINJI', currency: 'NGN', amount: 44043.27 },
-  { id: '10', buyer: 'KAM INTEGRATED', seller: 'IBAFO_1(TAOPEO)', sellerCode: 'IBAFO_1(TAOPEO)', currency: 'NGN', amount: 2443398.40 },
-  { id: '11', buyer: 'STARFENCED', seller: 'JEBBA_1', sellerCode: 'JEBBA_1', currency: 'NGN', amount: 539828.54 },
-  { id: '12', buyer: 'KAM SHAGAMU', seller: 'IBAFO_1(TAOPEO)', sellerCode: 'IBAFO_1(TAOPEO)', currency: 'NGN', amount: 835434.44 },
-  { id: '13', buyer: 'STAR PIPE', seller: 'JEBBA_1', sellerCode: 'JEBBA_1', currency: 'NGN', amount: 587719.23 },
-  { id: '14', buyer: 'FMPI', seller: 'TRANS-AMADI_1', sellerCode: 'TRANS-AMADI_1', currency: 'NGN', amount: 150205.85 },
-  { id: '15', buyer: 'DALI', seller: 'TRANS-AMADI_1', sellerCode: 'TRANS-AMADI_1', currency: 'NGN', amount: 83156.41 },
-  { id: '16', buyer: 'ADEFOFLORUKNSHO', seller: 'JEBBA_1', sellerCode: 'JEBBA_1', currency: 'NGN', amount: 2208054.40 },
-  { id: '17', buyer: 'PRISM', seller: 'JEBBA_1', sellerCode: 'JEBBA_1', currency: 'NGN', amount: 3891422.11 },
-  { id: '18', buyer: 'PULKIT', seller: 'OMOTOSHO_2', sellerCode: 'OMOTOSHO_2', currency: 'NGN', amount: 431078.74 },
-  { id: '19', buyer: 'HYDROPOLIS', seller: 'JEBBA_1', sellerCode: 'JEBBA_1', currency: 'NGN', amount: 5972549.10 },
-  { id: '20', buyer: 'AFLE', seller: 'ALAOJI_1', sellerCode: 'ALAOJI_1', currency: 'NGN', amount: 6766197.54 },
-  { id: '21', buyer: 'QUANTUM STEEL', seller: 'JEBBA_1', sellerCode: 'JEBBA_1', currency: 'NGN', amount: 882597.02 },
-  { id: '22', buyer: 'PHOENIX', seller: 'JEBBA_1, 2', sellerCode: 'JEBBA_1_2', currency: 'NGN', amount: 676310.71 },
-  { id: '23', buyer: 'CEET', seller: 'IKEJA_I(PARAS)', sellerCode: 'IKEJA_I(PARAS)', currency: 'USD', amount: 53972.00 },
-  { id: '24', buyer: 'ZUNGERU', seller: 'YONGHXING', sellerCode: 'YONGHXING', currency: 'NGN', amount: 7269100.74 },
-  { id: '25', buyer: 'FUTURE BUYER 2', seller: 'FUTURE SELLER 2', sellerCode: 'FUTURE_SELLER_2', currency: 'NGN', amount: 0 },
+  { id: '1', buyer: 'SBEE', seller: 'IKEJA_I(PARAS)', sellerCode: 'IKEJA_I(PARAS)', currency: 'USD', amount: 125000.00 },
+  { id: '2', buyer: 'SBEE', seller: 'DELTA_1(UGHELLI)', sellerCode: 'DELTA_1(UGHELLI)', currency: 'USD', amount: 98500.50 },
+  { id: '3', buyer: 'CEET', seller: 'ODUKPANI_I(CALABAR)', sellerCode: 'ODUKPANI_I(CALABAR)', currency: 'USD', amount: 75250.75 },
+  { id: '4', buyer: 'SUNFLAG', seller: 'AFAM_3', sellerCode: 'AFAM_3', currency: 'USD', amount: 185000.25 },
+  { id: '5', buyer: 'INNER GALAXY', seller: 'KAINJI', sellerCode: 'KAINJI', currency: 'NGN', amount: 18500000.00 },
+  { id: '6', buyer: 'KAM INDUSTRIES', seller: 'IBAFO_1(TAOPEO)', sellerCode: 'IBAFO_1(TAOPEO)', currency: 'NGN', amount: 12750000.50 },
+  { id: '7', buyer: 'HYDROPOLIS', seller: 'JEBBA_1', sellerCode: 'JEBBA_1', currency: 'NGN', amount: 9850000.25 },
+  { id: '8', buyer: 'AFLE', seller: 'ALAOJI_1', sellerCode: 'ALAOJI_1', currency: 'NGN', amount: 8200000.75 },
+  { id: '9', buyer: 'PRISM', seller: 'OMOTOSHO_2', sellerCode: 'OMOTOSHO_2', currency: 'NGN', amount: 6450000.00 },
+  { id: '10', buyer: 'ZUNGERU HPP', seller: 'YONGHXING', sellerCode: 'YONGHXING', currency: 'NGN', amount: 7500000.00 },
 ];
 
 // Mock Bilateral Statements
@@ -110,25 +95,25 @@ export const MOCK_BILATERAL_STATEMENTS: BilateralStatement[] = [
 
     trades: JUNE_2025_BILATERAL_TRADES,
 
-    totalUSD: 368894.36,
-    totalNGN: 49995299.78,
-    outstandingUSD: 368894.36,
-    outstandingNGN: 49995299.78,
+    totalUSD: 483751.50,
+    totalNGN: 63250001.50,
+    outstandingUSD: 483751.50,
+    outstandingNGN: 63250001.50,
 
     // Page 2 charges (for IKEJA_I(PARAS) AND SBEE trade)
     charges: {
-      tspCharge: 748170.75,
-      soCharges: 13988.61,
-      moCharges: 6199.81,
-      asCharges: 10210.21,
-      tcnRegulatory: 17312.55,
-      gencoRegulatory: 40272.29,
-      total: 956772.34,
+      tspCharge: 850000.00,
+      soCharges: 15000.00,
+      moCharges: 7500.00,
+      asCharges: 12000.00,
+      tcnRegulatory: 20000.00,
+      gencoRegulatory: 45000.00,
+      total: 949500.00,
     },
     chargesCurrency: 'USD',
 
-    amountInWordsUSD: 'Three Hundred and Sixty - Eight Thousand, Eight Hundred and Ninety - Four Dollar and Thirty - Six Cent Only',
-    amountInWordsNGN: 'Forty - Nine Million, Nine Hundred and Ninety - Five Thousand, Two Hundred and Ninety - Nine Naira and Seventy - Eight Kobo Only',
+    amountInWordsUSD: numberToWordsUSD(483751.50),
+    amountInWordsNGN: numberToWordsNGN(63250001.50),
 
     explanatoryNotes: [
       'Charges for TSP, MO, SO, AS, and Regulatory Charges were determined in line with negotiated bilateral agreements and Section 3 of Energy Swap and Supplementary Order on the commencement of the Transitional Electricity Market (Order No. NERC/15/2011)',
@@ -175,13 +160,13 @@ export const MOCK_BILATERAL_STATEMENTS: BilateralStatement[] = [
 
     trades: JUNE_2025_BILATERAL_TRADES.map(t => ({ ...t, amount: t.amount * 0.92 })),
 
-    totalUSD: 339382.41,
-    totalNGN: 45995675.79,
-    outstandingUSD: 339382.41,
-    outstandingNGN: 45995675.79,
+    totalUSD: 445051.38,
+    totalNGN: 58190001.38,
+    outstandingUSD: 445051.38,
+    outstandingNGN: 58190001.38,
 
-    amountInWordsUSD: numberToWordsUSD(339382.41),
-    amountInWordsNGN: numberToWordsNGN(45995675.79),
+    amountInWordsUSD: numberToWordsUSD(445051.38),
+    amountInWordsNGN: numberToWordsNGN(58190001.38),
 
     explanatoryNotes: [],
     nercReferences: ['NERC/15/2011'],
@@ -217,13 +202,13 @@ export const MOCK_BILATERAL_STATEMENTS: BilateralStatement[] = [
 
     trades: JUNE_2025_BILATERAL_TRADES.map(t => ({ ...t, amount: t.amount * 1.05 })),
 
-    totalUSD: 387339.08,
-    totalNGN: 52495064.77,
-    outstandingUSD: 387339.08,
-    outstandingNGN: 52495064.77,
+    totalUSD: 507939.08,
+    totalNGN: 66412501.58,
+    outstandingUSD: 507939.08,
+    outstandingNGN: 66412501.58,
 
-    amountInWordsUSD: numberToWordsUSD(387339.08),
-    amountInWordsNGN: numberToWordsNGN(52495064.77),
+    amountInWordsUSD: numberToWordsUSD(507939.08),
+    amountInWordsNGN: numberToWordsNGN(66412501.58),
 
     explanatoryNotes: [],
     nercReferences: ['NERC/15/2011'],

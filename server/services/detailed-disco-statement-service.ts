@@ -24,55 +24,32 @@ import type {
 // PORT HARCOURT JUNE 2025 DETAILED STATEMENT
 // ==========================================
 
-// Charge Line Items (All 8 sections from Image 1)
+// Charge Line Items - Reduced to 15 key items
 const PH_JUNE_2025_CHARGE_LINE_ITEMS: DiscoStatementChargeLineItem[] = [
-  // Section 1: Metered Energy Charges
+  // Section 1: Metered Energy Charges (Top 5)
   { id: '1.1', chargeCode: '1.1 MET.TSP', category: 'MET', serviceProvider: 'TSP', description: 'Transmission Company of Nigeria Energy Charge', notes: 'A', amount: 850511129.83, sequence: 1.1 },
   { id: '1.2', chargeCode: '1.2 MET.SO', category: 'MET', serviceProvider: 'SO', description: 'Nigeria Independent System Operator Energy Charge', notes: 'B', amount: 253551722.09, sequence: 1.2 },
   { id: '1.3', chargeCode: '1.3 MET.TIF', category: 'MET', serviceProvider: 'TIF', description: 'Transmission Infrastructure Energy Charge', notes: 'C', amount: 414276153.90, sequence: 1.3 },
   { id: '1.4', chargeCode: '1.4 MET.ANC', category: 'MET', serviceProvider: 'ANC', description: 'Ancillary Services Energy Charge', notes: 'D', amount: 70501712.30, sequence: 1.4 },
   { id: '1.5', chargeCode: '1.5 MET.NBET', category: 'MET', serviceProvider: 'NBET', description: 'Nigeria Bulk Electricity Trader Energy Charge', notes: 'E', amount: 22005910.38, sequence: 1.5 },
-  { id: '1.6', chargeCode: '1.6 MET.GRC', category: 'MET', serviceProvider: 'GRC', description: 'GENCO Regulatory Energy Charge', notes: 'F', amount: 16560942.77, sequence: 1.6 },
-  { id: '1.7', chargeCode: '1.7 MET.TRC', category: 'MET', serviceProvider: 'TRC', description: 'TCN/NISO Regulatory Energy Charge', notes: 'G', amount: 322405567.82, sequence: 1.7 },
-  { id: '1.8', chargeCode: '1.8 MET.DRC', category: 'MET', serviceProvider: 'DRC', description: 'Disco Regulatory Energy Charge', notes: 'H', amount: 113824094.40, sequence: 1.8 },
 
-  // Section 2: Loss of Revenue of DisCo/TSP in terms Adjustments (AECC)
-  { id: '2.1', chargeCode: '2.1 CEA.TSP', category: 'CEA', serviceProvider: 'TSP', description: 'Transmission Company of Nigeria AECC', notes: 'A', amount: 0, sequence: 2.1 },
-  { id: '2.2', chargeCode: '2.2 CEA.SO', category: 'CEA', serviceProvider: 'SO', description: 'Nigeria Independent System Operator AECC', notes: 'B', amount: 0, sequence: 2.2 },
-  { id: '2.3', chargeCode: '2.3 CEA.TIF', category: 'CEA', serviceProvider: 'TIF', description: 'Transmission Infrastructure AECC', notes: 'C', amount: 0, sequence: 2.3 },
-  { id: '2.4', chargeCode: '2.4 CEA.ANC', category: 'CEA', serviceProvider: 'ANC', description: 'Ancillary Services AECC', notes: 'D', amount: 0, sequence: 2.4 },
-  { id: '2.5', chargeCode: '2.5 CEA.NBET', category: 'CEA', serviceProvider: 'NBET', description: 'Nigeria Bulk Electricity Trader AECC', notes: 'E', amount: 0, sequence: 2.5 },
-  { id: '2.6', chargeCode: '2.6 CEA.GRC', category: 'CEA', serviceProvider: 'GRC', description: 'GENCO Regulatory AECC', notes: 'F', amount: 0, sequence: 2.6 },
-  { id: '2.7', chargeCode: '2.7 CEA.TRC', category: 'CEA', serviceProvider: 'TRC', description: 'TCN/NISO Regulatory AECC', notes: 'G', amount: 0, sequence: 2.7 },
-  { id: '2.8', chargeCode: '2.8 CEA.DRC', category: 'CEA', serviceProvider: 'DRC', description: 'Disco Regulatory AECC', notes: 'H', amount: 0, sequence: 2.8 },
+  // Section 2: Regulatory Charges (Top 3)
+  { id: '1.6', chargeCode: '1.6 MET.TRC', category: 'MET', serviceProvider: 'TRC', description: 'TCN/NISO Regulatory Energy Charge', notes: 'G', amount: 322405567.82, sequence: 1.6 },
+  { id: '1.7', chargeCode: '1.7 MET.DRC', category: 'MET', serviceProvider: 'DRC', description: 'Disco Regulatory Energy Charge', notes: 'H', amount: 113824094.40, sequence: 1.7 },
+  { id: '1.8', chargeCode: '1.8 MET.GRC', category: 'MET', serviceProvider: 'GRC', description: 'GENCO Regulatory Energy Charge', notes: 'F', amount: 16560942.77, sequence: 1.8 },
 
-  // Section 3: Loss of Revenue Compensation from Disco to Service Providers (LoRRD)
+  // Section 3: Loss of Revenue Compensation from Disco (Top 3)
   { id: '3.1', chargeCode: '3.1 DLR.TSP', category: 'DLR', serviceProvider: 'TSP', description: 'Transmission Company of Nigeria LoRRD', notes: 'A', amount: 41682695.30, sequence: 3.1 },
-  { id: '3.2', chargeCode: '3.2 DLR.SO', category: 'DLR', serviceProvider: 'SO', description: 'Nigeria Independent System Operator LoRRD', notes: 'B', amount: 12426314.76, sequence: 3.2 },
-  { id: '3.3', chargeCode: '3.3 DLR.TIF', category: 'DLR', serviceProvider: 'TIF', description: 'Transmission Infrastructure LoRRD', notes: 'C', amount: 20303257.61, sequence: 3.3 },
-  { id: '3.4', chargeCode: '3.4 DLR.ANC', category: 'DLR', serviceProvider: 'ANC', description: 'Ancillary Services LoRRD', notes: 'D', amount: 3455218.07, sequence: 3.4 },
-  { id: '3.5', chargeCode: '3.5 DLR.NBET', category: 'DLR', serviceProvider: 'NBET', description: 'Nigeria Bulk Electricity Trader LoRRD', notes: 'E', amount: 1178526.86, sequence: 3.5 },
-  { id: '3.6', chargeCode: '3.6 DLR.GRC', category: 'DLR', serviceProvider: 'GRC', description: 'GENCO Regulatory LoRRD', notes: 'F', amount: 811635.16, sequence: 3.6 },
-  { id: '3.7', chargeCode: '3.7 DLR.TRC', category: 'DLR', serviceProvider: 'TRC', description: 'TCN/NISO Regulatory LoRRD', notes: 'G', amount: 15800772.65, sequence: 3.7 },
-  { id: '3.8', chargeCode: '3.8 DLR.DRC', category: 'DLR', serviceProvider: 'DRC', description: 'Disco Regulatory LoRRD', notes: 'H', amount: 5578404.43, sequence: 3.8 },
+  { id: '3.2', chargeCode: '3.2 DLR.TIF', category: 'DLR', serviceProvider: 'TIF', description: 'Transmission Infrastructure LoRRD', notes: 'C', amount: 20303257.61, sequence: 3.2 },
+  { id: '3.3', chargeCode: '3.3 DLR.TRC', category: 'DLR', serviceProvider: 'TRC', description: 'TCN/NISO Regulatory LoRRD', notes: 'G', amount: 15800772.65, sequence: 3.3 },
 
-  // Section 4: Loss of Revenue Compensation from TSP to Service Providers and Discos (LoRFT)
+  // Section 4: Loss of Revenue from TSP (Top 3)
   { id: '4.1', chargeCode: '4.1 TLR.TSP', category: 'TLR', serviceProvider: 'TSP', description: 'Transmission Company of Nigeria LoRFT', notes: 'A', amount: (163761034.96), sequence: 4.1 },
-  { id: '4.2', chargeCode: '4.2 TLR.SO', category: 'TLR', serviceProvider: 'SO', description: 'Nigeria Independent System Operator LoRFT', notes: 'B', amount: 4639099.65, sequence: 4.2 },
-  { id: '4.3', chargeCode: '4.3 TLR.TIF', category: 'TLR', serviceProvider: 'TIF', description: 'Transmission Infrastructure LoRFT', notes: 'C', amount: 7579788.30, sequence: 4.3 },
-  { id: '4.4', chargeCode: '4.4 TLR.ANC', category: 'TLR', serviceProvider: 'ANC', description: 'Ancillary Services LoRFT', notes: 'D', amount: 1289931.96, sequence: 4.4 },
-  { id: '4.5', chargeCode: '4.5 TLR.NBET', category: 'TLR', serviceProvider: 'NBET', description: 'Nigeria Bulk Electricity Trader LoRFT', notes: 'E', amount: 439977.77, sequence: 4.5 },
-  { id: '4.6', chargeCode: '4.6 TLR.GRC', category: 'TLR', serviceProvider: 'GRC', description: 'GENCO Regulatory LoRFT', notes: 'F', amount: 303007.48, sequence: 4.6 },
-  { id: '4.7', chargeCode: '4.7 TLR.TRC', category: 'TLR', serviceProvider: 'TRC', description: 'TCN/NISO Regulatory LoRFT', notes: 'G', amount: 5898881.62, sequence: 4.7 },
-  { id: '4.8', chargeCode: '4.8 TLR.DRC', category: 'TLR', serviceProvider: 'DRC', description: 'Disco Regulatory LoRFT', notes: 'H', amount: 2082578.33, sequence: 4.8 },
+  { id: '4.2', chargeCode: '4.2 TLR.TIF', category: 'TLR', serviceProvider: 'TIF', description: 'Transmission Infrastructure LoRFT', notes: 'C', amount: 7579788.30, sequence: 4.2 },
+  { id: '4.3', chargeCode: '4.3 TLR.TRC', category: 'TLR', serviceProvider: 'TRC', description: 'TCN/NISO Regulatory LoRFT', notes: 'G', amount: 5898881.62, sequence: 4.3 },
 
-  // Section 5: Transmission Loss Factor Compensation
-  { id: '5.1', chargeCode: '5.1 TL.TSP', category: 'TL', serviceProvider: 'TSP', description: 'Transmission Service Provider TLF Compensation', notes: 'A', amount: (326956213.74), sequence: 5.1 },
-
-  // Section 6: GENCO/NBET PPA Adjustments
-  { id: '6.1', chargeCode: '6.1 LQD.DTD', category: 'LQD', serviceProvider: 'DTD', description: 'TCN Capacity Use Refund to Disco', notes: 'J', amount: 0, sequence: 6.1 },
-  { id: '6.2', chargeCode: '6.2 LQD.GSD', category: 'LQD', serviceProvider: 'GSD', description: 'Grid Use Balancing (Credit or Debit)', notes: 'K', amount: 0, sequence: 6.2 },
-  { id: '6.3', chargeCode: '6.3 LQD.GDT', category: 'LQD', serviceProvider: 'GDT', description: 'TCN Portion of Shared Liquidated Damages', notes: 'L', amount: 0, sequence: 6.3 },
+  // Section 5: Transmission Loss Factor
+  { id: '5.1', chargeCode: '5.1 TL.TSP', category: 'TL', serviceProvider: 'TSP', description: 'Transmission Loss Factor Compensation', notes: 'A', amount: (326956213.74), sequence: 5.1 },
 ];
 
 // Calculate category totals
@@ -108,7 +85,7 @@ const PH_JUNE_2025_ENERGY_ACCOUNTING: ContractEnergyAccounting = {
   adjustedMytoKwh: 203760000,
 };
 
-// Invoice Derivations (Table 2 from Image 2)
+// Invoice Derivations (Table 2) - Reduced to match charge items
 const PH_JUNE_2025_INVOICE_DERIVATIONS: InvoiceDerivation[] = [
   {
     discoId: 'PH',
@@ -184,51 +161,6 @@ const PH_JUNE_2025_INVOICE_DERIVATIONS: InvoiceDerivation[] = [
     lossOfRevenueTcnToSpOrDisco: 439978,
     tlf: 0,
     total: 23624414,
-  },
-  {
-    discoId: 'PH',
-    discoCode: 'P/H',
-    discoName: 'Port Harcourt Electricity Distribution Company',
-    period: 'June 2025',
-    notes: 'F',
-    entity: 'TCN/NISO NERC',
-    ratePerKwh: 0.0867,
-    meterReadingBilling: 16560943,
-    mytoExcessAdjustment: 0,
-    lossOfRevenueDiscoToSp: 811635,
-    lossOfRevenueTcnToSpOrDisco: 303007,
-    tlf: 0,
-    total: 17675585,
-  },
-  {
-    discoId: 'PH',
-    discoCode: 'P/H',
-    discoName: 'Port Harcourt Electricity Distribution Company',
-    period: 'June 2025',
-    notes: 'G',
-    entity: 'GENCO NERC',
-    ratePerKwh: 1.6888,
-    meterReadingBilling: 322405568,
-    mytoExcessAdjustment: 0,
-    lossOfRevenueDiscoToSp: 15800773,
-    lossOfRevenueTcnToSpOrDisco: 5898882,
-    tlf: 0,
-    total: 344105222,
-  },
-  {
-    discoId: 'PH',
-    discoCode: 'P/H',
-    discoName: 'Port Harcourt Electricity Distribution Company',
-    period: 'June 2025',
-    notes: 'H',
-    entity: 'DISCO NERC/SERC',
-    ratePerKwh: 0.5962,
-    meterReadingBilling: 113824094,
-    mytoExcessAdjustment: 0,
-    lossOfRevenueDiscoToSp: 5578404,
-    lossOfRevenueTcnToSpOrDisco: 2082578,
-    tlf: 0,
-    total: 121485077,
   },
 ];
 
@@ -372,11 +304,13 @@ const PORT_HARCOURT_JUNE_2025_STATEMENT: DetailedDiscoStatement = {
 
   explanatoryNotes: PH_JUNE_2025_EXPLANATORY_NOTES,
 
-  status: 'approved',
-  draftedBy: 'System Generated',
-  draftedAt: new Date('2025-06-05'),
+  status: 'sent',
+  draftedBy: 'Ibrahim Musa',
+  draftedAt: new Date('2025-06-05T09:30:00'),
   approvedBy: 'Ali Bukar Ahmad',
-  approvedAt: new Date('2025-06-28'),
+  approvedAt: new Date('2025-06-28T14:15:00'),
+  sentTo: 'NERC - Port Harcourt Office',
+  sentAt: new Date('2025-06-28T16:45:00'),
 
   createdAt: new Date('2025-06-01'),
   updatedAt: new Date('2025-06-30'),
@@ -432,10 +366,12 @@ const ABUJA_JUNE_2025_STATEMENT: DetailedDiscoStatement = {
   invoiceDerivations: [],
   explanatoryNotes: PH_JUNE_2025_EXPLANATORY_NOTES,
   status: 'approved',
-  draftedBy: 'System Generated',
-  draftedAt: new Date('2025-06-05'),
+  draftedBy: 'Fatima Abubakar',
+  draftedAt: new Date('2025-06-04T11:20:00'),
   approvedBy: 'Ali Bukar Ahmad',
-  approvedAt: new Date('2025-06-28'),
+  approvedAt: new Date('2025-06-27T10:30:00'),
+  sentTo: 'NERC - Abuja Office',
+  sentAt: new Date('2025-06-27T15:00:00'),
   createdAt: new Date('2025-06-01'),
   updatedAt: new Date('2025-06-30'),
 };
@@ -482,10 +418,12 @@ const EKO_JUNE_2025_STATEMENT: DetailedDiscoStatement = {
   invoiceDerivations: [],
   explanatoryNotes: PH_JUNE_2025_EXPLANATORY_NOTES,
   status: 'finalized',
-  draftedBy: 'System Generated',
-  draftedAt: new Date('2025-06-05'),
+  draftedBy: 'Chioma Okafor',
+  draftedAt: new Date('2025-06-03T14:45:00'),
   approvedBy: 'Ali Bukar Ahmad',
-  approvedAt: new Date('2025-06-28'),
+  approvedAt: new Date('2025-06-26T16:20:00'),
+  sentTo: 'NERC - Lagos Office',
+  sentAt: new Date('2025-06-29T09:15:00'),
   createdAt: new Date('2025-06-01'),
   updatedAt: new Date('2025-06-30'),
 };
@@ -532,10 +470,12 @@ const IKEJA_JUNE_2025_STATEMENT: DetailedDiscoStatement = {
   invoiceDerivations: [],
   explanatoryNotes: PH_JUNE_2025_EXPLANATORY_NOTES,
   status: 'sent',
-  draftedBy: 'System Generated',
-  draftedAt: new Date('2025-06-05'),
+  draftedBy: 'Ahmed Yusuf',
+  draftedAt: new Date('2025-06-06T08:15:00'),
   approvedBy: 'Ali Bukar Ahmad',
-  approvedAt: new Date('2025-06-28'),
+  approvedAt: new Date('2025-06-29T11:45:00'),
+  sentTo: 'NERC - Ikeja Office',
+  sentAt: new Date('2025-06-29T14:30:00'),
   createdAt: new Date('2025-06-01'),
   updatedAt: new Date('2025-06-30'),
 };
@@ -575,10 +515,10 @@ export const detailedDiscoStatementService = {
    */
   async getDetailedStatementByDiscoPeriod(discoId: string, period: string): Promise<DetailedDiscoStatement | null> {
     await new Promise((resolve) => setTimeout(resolve, 200));
-    if (discoId === 'PH' && period === 'June 2025') {
-      return PORT_HARCOURT_JUNE_2025_STATEMENT;
-    }
-    return null;
+    const statement = ALL_STATEMENTS.find(
+      s => s.energyAccounting.discoId === discoId && s.period === period
+    );
+    return statement || null;
   },
 
   /**
@@ -586,8 +526,9 @@ export const detailedDiscoStatementService = {
    */
   async getChargeLineItemsByCategory(statementId: string, category: string) {
     await new Promise((resolve) => setTimeout(resolve, 100));
-    if (statementId === PORT_HARCOURT_JUNE_2025_STATEMENT.id) {
-      return PH_JUNE_2025_CHARGE_LINE_ITEMS.filter((item) => item.category === category);
+    const statement = ALL_STATEMENTS.find(s => s.id === statementId);
+    if (statement) {
+      return statement.chargeLineItems.filter((item) => item.category === category);
     }
     return [];
   },
@@ -597,10 +538,8 @@ export const detailedDiscoStatementService = {
    */
   async getEnergyAccounting(statementId: string): Promise<ContractEnergyAccounting | null> {
     await new Promise((resolve) => setTimeout(resolve, 100));
-    if (statementId === PORT_HARCOURT_JUNE_2025_STATEMENT.id) {
-      return PH_JUNE_2025_ENERGY_ACCOUNTING;
-    }
-    return null;
+    const statement = ALL_STATEMENTS.find(s => s.id === statementId);
+    return statement?.energyAccounting || null;
   },
 
   /**
@@ -608,10 +547,8 @@ export const detailedDiscoStatementService = {
    */
   async getInvoiceDerivations(statementId: string): Promise<InvoiceDerivation[]> {
     await new Promise((resolve) => setTimeout(resolve, 100));
-    if (statementId === PORT_HARCOURT_JUNE_2025_STATEMENT.id) {
-      return PH_JUNE_2025_INVOICE_DERIVATIONS;
-    }
-    return [];
+    const statement = ALL_STATEMENTS.find(s => s.id === statementId);
+    return statement?.invoiceDerivations || [];
   },
 
   /**
@@ -619,10 +556,8 @@ export const detailedDiscoStatementService = {
    */
   async getExplanatoryNotes(statementId: string): Promise<DiscoStatementExplanatoryNote[]> {
     await new Promise((resolve) => setTimeout(resolve, 100));
-    if (statementId === PORT_HARCOURT_JUNE_2025_STATEMENT.id) {
-      return PH_JUNE_2025_EXPLANATORY_NOTES;
-    }
-    return [];
+    const statement = ALL_STATEMENTS.find(s => s.id === statementId);
+    return statement?.explanatoryNotes || [];
   },
 
   /**
@@ -630,8 +565,9 @@ export const detailedDiscoStatementService = {
    */
   async getCategoryTotals(statementId: string) {
     await new Promise((resolve) => setTimeout(resolve, 100));
-    if (statementId === PORT_HARCOURT_JUNE_2025_STATEMENT.id) {
-      return totals;
+    const statement = ALL_STATEMENTS.find(s => s.id === statementId);
+    if (statement) {
+      return calculateCategoryTotals(statement.chargeLineItems);
     }
     return null;
   },

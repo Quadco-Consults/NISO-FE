@@ -182,7 +182,7 @@ export const NAVIGATION = [
     roles: ['super_admin', 'admin', 'billing_manager', 'finance_manager'],
   },
   {
-    title: 'Bilateral Statements',
+    title: 'Bilateral',
     href: '/bilateral-statements',
     icon: 'FileText',
     roles: ['super_admin', 'admin', 'billing_manager', 'finance_manager'],

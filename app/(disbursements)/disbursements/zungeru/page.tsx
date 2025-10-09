@@ -19,19 +19,19 @@ import {
 } from 'lucide-react';
 import { formatCurrency } from '@/lib/utils/formatters';
 
-// Mock data based on ZUNGERU PAYMENT REPORT - Top 5 DISCOs
+// Mock data based on ZUNGERU PAYMENT REPORT - Top 5 DISCOs with complete dummy data
 const zungeruPaymentsData = {
   period: 'May 2025',
   discos: [
-    { code: 'ABUJA', invoice: 2322212540.70, remitted: 0, outstanding: 0 },
-    { code: 'BENIN', invoice: 1593119505.77, remitted: 0, outstanding: 0 },
-    { code: 'EKO', invoice: 2262059674.62, remitted: 0, outstanding: 0 },
-    { code: 'IBADAN', invoice: 1897735233.86, remitted: 0, outstanding: 0 },
-    { code: 'IKEJA', invoice: 2606852508.16, remitted: 0, outstanding: 0 },
+    { code: 'ABUJA', invoice: 2322212540.70, remitted: 2322212540.70, outstanding: 0 },
+    { code: 'BENIN', invoice: 1593119505.77, remitted: 1593119505.77, outstanding: 0 },
+    { code: 'EKO', invoice: 2262059674.62, remitted: 2262059674.62, outstanding: 0 },
+    { code: 'IBADAN', invoice: 1897735233.86, remitted: 1897735233.86, outstanding: 0 },
+    { code: 'IKEJA', invoice: 2606852508.16, remitted: 2606852508.16, outstanding: 0 },
   ],
   serviceProviders: [
     { name: 'ANCILLARY SERV.', invoice: 77824808.58, disbursed: 77824808.58, pipDeductions: 0, outstanding: 0 },
-    { name: 'MO', invoice: 0, disbursed: 491733501.11, pipDeductions: 0, outstanding: 0 },
+    { name: 'MO', invoice: 491733501.11, disbursed: 491733501.11, pipDeductions: 0, outstanding: 0 },
     { name: 'NBET', invoice: 0, disbursed: 0, pipDeductions: 0, outstanding: 0 },
     { name: 'NERC', invoice: 490307863.60, disbursed: 490307863.60, pipDeductions: 0, outstanding: 0 },
     { name: 'SO', invoice: 279888439.41, disbursed: 125837842.36, pipDeductions: 154050597.05, outstanding: 0 },
@@ -46,6 +46,8 @@ export default function ZungeruPaymentReportPage() {
 
   // Calculate totals
   const totalDiscoInvoice = zungeruPaymentsData.discos.reduce((sum, d) => sum + d.invoice, 0);
+  const totalDiscoRemitted = zungeruPaymentsData.discos.reduce((sum, d) => sum + d.remitted, 0);
+  const totalSpInvoice = zungeruPaymentsData.serviceProviders.reduce((sum, sp) => sum + sp.invoice, 0);
   const totalSpDisbursed = zungeruPaymentsData.serviceProviders.reduce((sum, sp) => sum + sp.disbursed, 0);
   const totalPipDeductions = zungeruPaymentsData.serviceProviders.reduce((sum, sp) => sum + sp.pipDeductions, 0);
 
@@ -165,14 +167,14 @@ export default function ZungeruPaymentReportPage() {
                         <TableRow key={disco.code}>
                           <TableCell className="font-bold">{disco.code}</TableCell>
                           <TableCell className="text-right font-mono">{formatCurrency(disco.invoice)}</TableCell>
-                          <TableCell className="text-right font-mono text-muted-foreground">#REF!</TableCell>
+                          <TableCell className="text-right font-mono">{formatCurrency(disco.remitted)}</TableCell>
                           <TableCell className="text-right font-mono">-</TableCell>
                         </TableRow>
                       ))}
                       <TableRow className="bg-muted/50 font-bold">
                         <TableCell>TOTAL</TableCell>
                         <TableCell className="text-right">{formatCurrency(totalDiscoInvoice)}</TableCell>
-                        <TableCell className="text-right text-muted-foreground">#REF!</TableCell>
+                        <TableCell className="text-right">{formatCurrency(totalDiscoRemitted)}</TableCell>
                         <TableCell className="text-right">-</TableCell>
                       </TableRow>
                     </TableBody>
@@ -222,34 +224,26 @@ export default function ZungeruPaymentReportPage() {
                         <TableRow key={index}>
                           <TableCell className="font-semibold">{sp.name}</TableCell>
                           <TableCell className="text-right font-mono">
-                            {sp.invoice > 0 ? formatCurrency(sp.invoice) : (sp.name === 'MO' || sp.name === 'NBET' ? '#REF!' : '-')}
+                            {sp.invoice > 0 ? formatCurrency(sp.invoice) : '-'}
                           </TableCell>
                           <TableCell className="text-right font-mono">
                             {sp.disbursed > 0 ? formatCurrency(sp.disbursed) : '-'}
                           </TableCell>
                           <TableCell className="text-right font-mono bg-purple-50">
-                            {sp.pipDeductions > 0 ? formatCurrency(sp.pipDeductions) : (sp.name === 'MO' ? '#REF!' : '-')}
+                            {sp.pipDeductions > 0 ? formatCurrency(sp.pipDeductions) : '-'}
                           </TableCell>
                           <TableCell className="text-right font-mono">-</TableCell>
                         </TableRow>
                       ))}
                       <TableRow className="bg-muted/50 font-bold">
                         <TableCell>TOTAL</TableCell>
-                        <TableCell className="text-right">#REF!</TableCell>
+                        <TableCell className="text-right">{formatCurrency(totalSpInvoice)}</TableCell>
                         <TableCell className="text-right">{formatCurrency(totalSpDisbursed)}</TableCell>
-                        <TableCell className="text-right bg-purple-50">#REF!</TableCell>
+                        <TableCell className="text-right bg-purple-50">{formatCurrency(totalPipDeductions)}</TableCell>
                         <TableCell className="text-right">-</TableCell>
                       </TableRow>
                     </TableBody>
                   </Table>
-                </div>
-
-                {/* Notes */}
-                <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-                  <p className="text-sm text-blue-800">
-                    <strong>Note:</strong> #REF! indicates data reference not available. Mainstream Energy/Penstock Energy
-                    receives the largest allocation as the primary energy generator.
-                  </p>
                 </div>
               </CardContent>
             </Card>

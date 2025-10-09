@@ -284,48 +284,6 @@ export default function DiscoStatementDetailPage() {
           </div>
         </div>
 
-        <Separator className="my-8" />
-
-        {/* Footer */}
-        <div className="text-center text-sm text-gray-600 mb-6">
-          NIGERIA ELECTRICITY REGULATORY COMMISSION
-        </div>
-
-        {/* Explanatory Notes */}
-        {statement.explanatoryNotes && statement.explanatoryNotes.length > 0 && (
-          <div className="mt-8">
-            <div className="bg-black text-white p-3 text-center font-bold mb-4">
-              Explanatory Notes to Invoice
-            </div>
-            <ol className="space-y-4 text-sm">
-              {statement.explanatoryNotes.map((note) => (
-                <li key={note.id} className="flex gap-2">
-                  <span className="font-semibold">{note.noteNumber}.</span>
-                  <div className="flex-1">
-                    {note.title && <div className="font-semibold mb-1">{note.title}</div>}
-                    <span>{note.content}</span>
-                    {note.subNotes && note.subNotes.length > 0 && (
-                      <ul className="mt-2 space-y-1 ml-4">
-                        {note.subNotes.map((subNote, idx) => (
-                          <li key={idx}>
-                            <span className="font-semibold">{subNote.letter}.</span> {subNote.content}
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-                    {note.nercReference && (
-                      <div className="mt-1">
-                        <Badge variant="outline" className="text-xs">
-                          {note.nercReference}
-                        </Badge>
-                      </div>
-                    )}
-                  </div>
-                </li>
-              ))}
-            </ol>
-          </div>
-        )}
       </div>
 
       {/* Workflow Information */}

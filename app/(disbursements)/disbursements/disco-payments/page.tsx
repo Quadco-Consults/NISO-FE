@@ -20,19 +20,19 @@ import {
 } from 'lucide-react';
 import { formatCurrency } from '@/lib/utils/formatters';
 
-// Mock data based on MAY 2025 DASHBOARD REPORT - Top 5 DISCOs
+// Mock data based on MAY 2025 DASHBOARD REPORT - Top 5 DISCOs with complete dummy data
 const discoPaymentsData = {
   period: 'May 2025',
   discos: [
-    { code: 'ABUJA', invoice: 3708657448.70, remitted: 2689359662.30, txdxNetOff: 135849357.43, atfpPenalty: 0, outstanding: 0 },
-    { code: 'BENIN', invoice: 1278980018.16, remitted: 516228028.71, txdxNetOff: 295161664.35, atfpPenalty: 0, outstanding: 0 },
-    { code: 'EKO', invoice: 2831219052.00, remitted: 1829903264.39, txdxNetOff: 266357283.25, atfpPenalty: 0, outstanding: 0 },
-    { code: 'IBADAN', invoice: 2404657915.02, remitted: 1711282414.58, txdxNetOff: 0, atfpPenalty: 0, outstanding: 0 },
-    { code: 'IKEJA', invoice: 3270777519.27, remitted: 2221590523.05, txdxNetOff: 195143752.16, atfpPenalty: 0, outstanding: 0 },
+    { code: 'ABUJA', invoice: 3708657448.70, remitted: 2689359662.30, txdxNetOff: 135849357.43, atfpPenalty: 42500000.00, outstanding: 841448428.97 },
+    { code: 'BENIN', invoice: 1278980018.16, remitted: 516228028.71, txdxNetOff: 295161664.35, atfpPenalty: 15000000.00, outstanding: 452590325.10 },
+    { code: 'EKO', invoice: 2831219052.00, remitted: 1829903264.39, txdxNetOff: 266357283.25, atfpPenalty: 31200000.00, outstanding: 703758504.36 },
+    { code: 'IBADAN', invoice: 2404657915.02, remitted: 1711282414.58, txdxNetOff: 158450000.00, atfpPenalty: 28000000.00, outstanding: 506925500.44 },
+    { code: 'IKEJA', invoice: 3270777519.27, remitted: 2221590523.05, txdxNetOff: 195143752.16, atfpPenalty: 36800000.00, outstanding: 817043244.06 },
   ],
   serviceProviders: [
-    { name: 'ANCILLARY SERV.', invoice: 952343843.12, disbursed: 952343843.12, pipAmount: 0, txdxDeductions: 0, atfpPenalty: 0, outstanding: 0 },
-    { name: 'MO', invoice: 0, disbursed: 0, pipAmount: 0, txdxDeductions: 0, atfpPenalty: 0, outstanding: 0 },
+    { name: 'ANCILLARY SERV.', invoice: 952343843.12, disbursed: 952343843.12, pipAmount: 125000000.00, txdxDeductions: 0, atfpPenalty: 0, outstanding: 0 },
+    { name: 'MO', invoice: 285500000.00, disbursed: 265800000.00, pipAmount: 0, txdxDeductions: 0, atfpPenalty: 0, outstanding: 19700000.00 },
     { name: 'NBET', invoice: 324831174.98, disbursed: 310968183.30, pipAmount: 0, txdxDeductions: 0, atfpPenalty: 0, outstanding: 13862991.68 },
     { name: 'NERC', invoice: 6007856138.74, disbursed: 5744661702.68, pipAmount: 0, txdxDeductions: 0, atfpPenalty: 0, outstanding: 263194436.06 },
     { name: 'SO', invoice: 3425000804.82, disbursed: 1367462074.05, pipAmount: 1804668161.82, txdxDeductions: 0, atfpPenalty: 106700000.00, outstanding: 146170568.96 },
@@ -53,6 +53,9 @@ export default function DiscoPaymentsReportPage() {
 
   const totalSpInvoice = discoPaymentsData.serviceProviders.reduce((sum, sp) => sp.invoice + sum, 0);
   const totalSpDisbursed = discoPaymentsData.serviceProviders.reduce((sum, sp) => sp.disbursed + sum, 0);
+  const totalSpPipAmount = discoPaymentsData.serviceProviders.reduce((sum, sp) => sp.pipAmount + sum, 0);
+  const totalSpTxdxDeductions = discoPaymentsData.serviceProviders.reduce((sum, sp) => sp.txdxDeductions + sum, 0);
+  const totalSpAtfpPenalty = discoPaymentsData.serviceProviders.reduce((sum, sp) => sp.atfpPenalty + sum, 0);
   const totalSpOutstanding = discoPaymentsData.serviceProviders.reduce((sum, sp) => sp.outstanding + sum, 0);
 
   return (
@@ -244,13 +247,13 @@ export default function DiscoPaymentsReportPage() {
                         <TableRow key={index}>
                           <TableCell className="font-semibold">{sp.name}</TableCell>
                           <TableCell className="text-right font-mono">
-                            {sp.invoice > 0 ? formatCurrency(sp.invoice) : '#REF!'}
+                            {formatCurrency(sp.invoice)}
                           </TableCell>
                           <TableCell className="text-right font-mono">
-                            {sp.disbursed > 0 ? formatCurrency(sp.disbursed) : '#REF!'}
+                            {formatCurrency(sp.disbursed)}
                           </TableCell>
                           <TableCell className="text-right font-mono">
-                            {sp.pipAmount > 0 ? formatCurrency(sp.pipAmount) : (sp.name === 'MO' ? '#REF!' : '-')}
+                            {sp.pipAmount > 0 ? formatCurrency(sp.pipAmount) : '-'}
                           </TableCell>
                           <TableCell className="text-right font-mono bg-orange-50">
                             {sp.txdxDeductions > 0 ? formatCurrency(sp.txdxDeductions) : '-'}
@@ -262,30 +265,22 @@ export default function DiscoPaymentsReportPage() {
                             {sp.outstanding > 0 ? (
                               <span className="text-red-600 font-semibold">{formatCurrency(sp.outstanding)}</span>
                             ) : (
-                              sp.name === 'MO' ? '#REF!' : '-'
+                              '-'
                             )}
                           </TableCell>
                         </TableRow>
                       ))}
                       <TableRow className="bg-muted/50 font-bold">
                         <TableCell>TOTAL</TableCell>
-                        <TableCell className="text-right">#REF!</TableCell>
-                        <TableCell className="text-right">#REF!</TableCell>
-                        <TableCell className="text-right">#REF!</TableCell>
-                        <TableCell className="text-right bg-orange-50">{formatCurrency(totalTxdxNetOff)}</TableCell>
-                        <TableCell className="text-right">{formatCurrency(213400000.00)}</TableCell>
-                        <TableCell className="text-right">#REF!</TableCell>
+                        <TableCell className="text-right">{formatCurrency(totalSpInvoice)}</TableCell>
+                        <TableCell className="text-right">{formatCurrency(totalSpDisbursed)}</TableCell>
+                        <TableCell className="text-right">{formatCurrency(totalSpPipAmount)}</TableCell>
+                        <TableCell className="text-right bg-orange-50">{formatCurrency(totalSpTxdxDeductions)}</TableCell>
+                        <TableCell className="text-right">{formatCurrency(totalSpAtfpPenalty)}</TableCell>
+                        <TableCell className="text-right text-red-600">{formatCurrency(totalSpOutstanding)}</TableCell>
                       </TableRow>
                     </TableBody>
                   </Table>
-                </div>
-
-                {/* Notes */}
-                <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-                  <p className="text-sm text-blue-800">
-                    <strong>Note:</strong> #REF! indicates data reference not available in current dataset.
-                    Values will be calculated based on complete Trust Fund inflow data.
-                  </p>
                 </div>
               </CardContent>
             </Card>
