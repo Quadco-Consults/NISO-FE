@@ -37,7 +37,12 @@ export default function LoginPage() {
       email: "admin@niso.ng",
       name: "Admin User",
       role: "super_admin",
+      entityType: "niso",
+      entityId: "1",
+      entityName: "NISO - Nigeria Independent System Operator",
       department: "Administration",
+      status: "active",
+      permissions: ["dashboard:view", "users:view", "users:create", "users:edit", "users:delete"],
       createdAt: new Date(),
       updatedAt: new Date(),
     });

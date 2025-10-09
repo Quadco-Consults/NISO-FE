@@ -8,15 +8,87 @@ export type UserRole =
   | 'finance_manager'
   | 'debt_collector'
   | 'customer_service'
+  | 'auditor'
+  | 'entity_user'
   | 'viewer';
+
+export type EntityType =
+  | 'niso'
+  | 'disco'
+  | 'genco'
+  | 'tcn'
+  | 'tif'
+  | 'nerc'
+  | 'nbet'
+  | 'ipp'
+  | 'trader';
+
+export type UserStatus = 'active' | 'inactive' | 'suspended' | 'pending';
 
 export interface User {
   id: string;
   email: string;
   name: string;
   role: UserRole;
+  entityType: EntityType;
+  entityId?: string; // Reference to specific entity (DisCo, GenCo, etc.)
+  entityName?: string; // Name of the entity
   department?: string;
+  phone?: string;
   avatar?: string;
+  status: UserStatus;
+  permissions: string[];
+  lastLogin?: Date;
+  createdBy?: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+// Permission Types
+export type PermissionModule =
+  | 'dashboard'
+  | 'customers'
+  | 'billing'
+  | 'payments'
+  | 'disbursements'
+  | 'settlements'
+  | 'collections'
+  | 'treasury'
+  | 'reconciliation'
+  | 'reports'
+  | 'audit'
+  | 'users'
+  | 'settings';
+
+export type PermissionAction = 'view' | 'create' | 'edit' | 'delete' | 'approve' | 'export';
+
+export interface Permission {
+  id: string;
+  module: PermissionModule;
+  action: PermissionAction;
+  name: string;
+  description: string;
+}
+
+export interface RolePermission {
+  role: UserRole;
+  permissions: Permission[];
+}
+
+// Entity/Organization Types
+export interface Entity {
+  id: string;
+  name: string;
+  code: string;
+  type: EntityType;
+  status: 'active' | 'inactive' | 'suspended';
+  contactPerson?: string;
+  email?: string;
+  phone?: string;
+  address?: string;
+  bankName?: string;
+  accountNumber?: string;
+  accountName?: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -590,4 +662,1047 @@ export interface RegulatoryReport {
   notes?: string;
   createdAt: Date;
   updatedAt: Date;
+}
+
+// DISCO Statement Types
+export type DiscoStatementStatus = 'draft' | 'pending_approval' | 'approved' | 'sent' | 'acknowledged' | 'disputed';
+
+export interface DiscoCharge {
+  discoId: string;
+  discoCode: string;
+  discoName: string;
+  columnCode: string; // A, B, C, D, E, F, G, H, I, J, K
+  amount: number;
+  notes?: string;
+}
+
+export interface DiscoStatementLineItem {
+  id: string;
+  description: string;
+  category: 'tsp' | 'mo' | 'so' | 'as' | 'nbet' | 'regulatory' | 'energy' | 'adjustment' | 'other';
+  reference?: string; // NERC order reference
+  baseAmount: number;
+  adjustments: number;
+  totalAmount: number;
+  calculation?: string; // Formula or calculation method
+}
+
+export interface DiscoStatement {
+  id: string;
+  statementNumber: string;
+  title: string;
+  period: string; // e.g., "June 2025"
+  month: number;
+  year: number;
+  recipientEntity: string; // e.g., "NIGERIA ELECTRICITY REGULATORY COMMISSION"
+  recipientCode: string; // e.g., "REG.IND.001"
+  representativeName: string;
+  representativeTitle: string;
+  address: string;
+
+  // Charges breakdown
+  discoCharges: DiscoCharge[];
+
+  // Special items
+  zungeruEnergyCreditNaira: number;
+
+  // Totals
+  totalAmount: number;
+  outstandingPreviousMonth?: number;
+  outstandingCurrentMonth: number;
+
+  // Line items and calculations
+  lineItems: DiscoStatementLineItem[];
+
+  // Explanatory notes
+  explanatoryNotes: string[];
+  nercReferences: string[]; // NERC order references
+
+  // Status and workflow
+  status: DiscoStatementStatus;
+  draftedBy?: string;
+  draftedAt?: Date;
+  approvedBy?: string;
+  approvedAt?: Date;
+  sentTo?: string;
+  sentAt?: Date;
+  acknowledgedBy?: string;
+  acknowledgedAt?: Date;
+  disputeReason?: string;
+
+  // Amounts in words
+  amountInWords: string;
+
+  // Metadata
+  pdfUrl?: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface DiscoStatementSummary {
+  period: string;
+  totalStatements: number;
+  totalAmount: number;
+  approvedCount: number;
+  pendingCount: number;
+  disputedCount: number;
+  sentCount: number;
+}
+
+// DISCO Charge Categories (as per the statement structure)
+export interface DiscoChargeBreakdown {
+  tsp: number; // Transmission Service Provider
+  mo: number; // Market Operator
+  so: number; // System Operator
+  as: number; // Ancillary Services
+  nbet: number; // NBET charges
+  regulatory: number; // Regulatory charges
+  energyCharge: number;
+  excessMYTO: number;
+  tlf: number; // Transmission Loss Factor
+  adjustments: number;
+  total: number;
+}
+
+// Bilateral Statement Types
+export type BilateralStatementStatus = 'draft' | 'pending_approval' | 'approved' | 'sent' | 'acknowledged' | 'disputed';
+export type BilateralCurrency = 'USD' | 'NGN';
+
+export interface BilateralTrade {
+  id: string;
+  buyer: string;
+  seller: string;
+  sellerCode: string; // e.g., IKEJA_I(PARAS), JEBBA_1
+  currency: BilateralCurrency;
+  amount: number;
+  notes?: string;
+}
+
+export interface BilateralCharges {
+  tspCharge: number; // Transmission Service Provider (A)
+  soCharges: number; // System Operations (B)
+  moCharges: number; // Market Operations (C)
+  asCharges: number; // Ancillary Services (D)
+  tcnRegulatory: number; // TCN Regulatory Charges (E)
+  gencoRegulatory: number; // GENCO Regulatory Charges (F)
+  total: number;
+}
+
+export interface BilateralStatement {
+  id: string;
+  statementNumber: string;
+  title: string;
+  period: string;
+  month: number;
+  year: number;
+
+  // Recipient (usually NERC)
+  recipientEntity: string;
+  recipientCode: string;
+  representativeName: string;
+  representativeTitle: string;
+  address: string;
+
+  // Trade participants
+  tradeParticipant1: string; // e.g., "IKEJA_I(PARAS) AND SBEE"
+  tradeParticipant2?: string;
+
+  // Seller information (for detail page)
+  sellerName?: string;
+  sellerCode?: string;
+  sellerRepName?: string;
+  sellerRepTitle?: string;
+  sellerAddress?: string;
+
+  // Bilateral trades list
+  trades: BilateralTrade[];
+
+  // Totals by currency
+  totalUSD: number;
+  totalNGN: number;
+  outstandingUSD: number;
+  outstandingNGN: number;
+
+  // For individual trade detail (Page 2)
+  charges?: BilateralCharges;
+  chargesCurrency?: BilateralCurrency;
+
+  // Amount in words
+  amountInWordsUSD: string;
+  amountInWordsNGN: string;
+
+  // Explanatory notes
+  explanatoryNotes: string[];
+  nercReferences: string[];
+
+  // Workflow
+  status: BilateralStatementStatus;
+  draftedBy?: string;
+  draftedAt?: Date;
+  approvedBy?: string;
+  approvedAt?: Date;
+  sentTo?: string;
+  sentAt?: Date;
+  acknowledgedBy?: string;
+  acknowledgedAt?: Date;
+
+  // Metadata
+  pdfUrl?: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface BilateralStatementSummary {
+  period: string;
+  totalStatements: number;
+  totalAmountUSD: number;
+  totalAmountNGN: number;
+  approvedCount: number;
+  pendingCount: number;
+  disputedCount: number;
+  sentCount: number;
+}
+
+// ==========================================
+// COMPREHENSIVE MARKET SETTLEMENT SYSTEM
+// ==========================================
+
+// Service Provider Categories (based on Images 1-3)
+export type ServiceProviderCategory =
+  | 'ancillary_services' // AS
+  | 'nbet' // NBET
+  | 'nerc' // NERC
+  | 'niso' // NISO
+  | 'tcn' // TCN (Transmission Company of Nigeria)
+  | 'tsp' // TSP (Transmission Service Provider)
+  | 'tif' // TIF (Transitional Electricity Market)
+  | 'so' // SO (System Operator)
+  | 'mo'; // MO (Market Operator)
+
+// DISCO Invoice Line Item (Image 1 structure)
+export interface DiscoInvoiceLineItem {
+  id: string;
+  discoId: string;
+  discoCode: string;
+  discoName: string;
+
+  // Service Provider Charges (Column headers from Image 1)
+  ancillaryServices: number; // Column A
+  nbet: number; // Column B
+  nerc: number; // Column C
+  niso: number; // Column D
+  tcn: number; // Column E
+  tif: number; // Column F
+
+  // Calculated fields
+  grossInvoice: number; // G = SUM(A-F)
+  netInvoice: number; // H = G - A (Net after Ancillary Services & TIF deductions)
+}
+
+// Trust Fund & DISCO Inflow (Image 2 structure)
+export interface DiscoInflowRecord {
+  id: string;
+  discoId: string;
+  discoCode: string;
+  discoName: string;
+  period: string;
+
+  // Inflow sources
+  trustFund: number; // Collections received
+  txdxDeductions: number; // Tax deductions
+  tifAmount: number; // TIF allocation
+
+  // Calculated
+  grossInflow: number; // Total inflow
+
+  // Deductions
+  ancillaryServicesDeduction: number; // 100% of AS charges
+  servTifDeduction: number; // Service & TIF deductions
+
+  // Disbursements to service providers
+  tifDisbursement: number;
+  nbetDisbursement: number;
+  nercDisbursement: number;
+  nisoDisbursement: number;
+  tspDisbursement: number;
+
+  // Performance Improvement Programs
+  pipNiso: number; // PIP for NISO
+  pipTsp: number; // PIP for TSP
+
+  // Summary
+  totalPip: number;
+  tspAllocation: number;
+  nisoAllocation: number;
+  txdxFinal: number; // Final tax amount
+
+  // ATFP Penalties
+  atfpPenaltySo: number; // SO penalty - 55.04%
+  atfpPenaltyTsp: number; // TSP penalty - 46.70%
+
+  // Net disbursement
+  netDisbursement: number;
+}
+
+// Disbursement to Service Providers (Image 3 structure)
+export interface ServiceProviderDisbursement {
+  id: string;
+  discoId: string;
+  discoCode: string;
+  discoName: string;
+  period: string;
+
+  // Individual service provider amounts
+  ancillaryServices: number;
+  nbet: number;
+  nerc: number;
+  niso: number;
+  tsp: number;
+  pipNiso: number;
+  pipTsp: number;
+  txdxTsp: number;
+  tif: number;
+
+  // ATFP Penalties
+  atfpPenaltySo: number;
+  atfpPenaltyTsp: number;
+
+  // Total disbursement to this provider
+  totalDisbursement: number;
+}
+
+// DISCO Indebtedness (Image 4 structure)
+export interface DiscoIndebtedness {
+  id: string;
+  discoId: string;
+  discoCode: string;
+  discoName: string;
+  period: string;
+
+  // Financial tracking
+  totalInvoice: number; // Total amount invoiced
+  totalInflow: number; // Total payments received
+  shortfall: number; // Difference (Invoice - Inflow)
+  shortfallPercentage: number; // (Shortfall / Invoice) * 100
+
+  // Aging
+  current: number;
+  overdue30: number;
+  overdue60: number;
+  overdue90: number;
+  overdue120Plus: number;
+
+  lastPaymentDate?: Date;
+  lastPaymentAmount?: number;
+}
+
+// Service Provider Indebtedness Matrix (Image 6 structure)
+export interface ServiceProviderIndebtedness {
+  id: string;
+  period: string;
+  discoId: string;
+  discoCode: string;
+  discoName: string;
+
+  // Breakdown by service provider
+  ancillaryServices: {
+    invoice: number;
+    payment: number;
+    outstanding: number;
+  };
+  nbet: {
+    invoice: number;
+    payment: number;
+    outstanding: number;
+  };
+  nerc: {
+    invoice: number;
+    payment: number;
+    outstanding: number;
+  };
+  niso: {
+    invoice: number;
+    payment: number;
+    outstanding: number;
+  };
+  tsp: {
+    invoice: number;
+    payment: number;
+    outstanding: number;
+  };
+  tif: {
+    invoice: number;
+    payment: number;
+    outstanding: number;
+  };
+
+  // Totals
+  totalInvoice: number;
+  totalPayment: number;
+  totalOutstanding: number;
+}
+
+// TIF Payment Tracking (Image 5 structure)
+export interface TifPaymentRecord {
+  id: string;
+  discoId: string;
+  discoCode: string;
+  discoName: string;
+  period: string;
+
+  totalInvoice: number;
+  totalInflow: number;
+  shortfall: number;
+  shortfallPercentage: number;
+}
+
+// Market Operator Disbursement Schedule (Image 7 structure)
+export interface MarketOperatorDisbursementSchedule {
+  id: string;
+  scheduleNumber: string;
+  period: string;
+  createdAt: Date;
+
+  // Beneficiaries with bank details
+  beneficiaries: {
+    name: string;
+    category: ServiceProviderCategory;
+    bankName: string;
+    accountNumber: string;
+    accountDetails: string;
+    invoice: number;
+    totalInflow: number;
+    grossPayments: number;
+    txdxDeductions: number;
+    pipDeductions: number;
+    atfpPenalty: number;
+    netPayment: number;
+    comments?: string;
+  }[];
+
+  // Summary totals
+  summary: {
+    ancillaryService: { invoice: number; totalInflow: number; grossPayments: number; txdxDeductions: number; pipDeductions: number; atfpPenalty: number; netPayment: number };
+    mo: { invoice: number; totalInflow: number; grossPayments: number; txdxDeductions: number; pipDeductions: number; atfpPenalty: number; netPayment: number };
+    so: { invoice: number; totalInflow: number; grossPayments: number; txdxDeductions: number; pipDeductions: number; atfpPenalty: number; netPayment: number };
+    nbet: { invoice: number; totalInflow: number; grossPayments: number; txdxDeductions: number; pipDeductions: number; atfpPenalty: number; netPayment: number };
+    tsp: { invoice: number; totalInflow: number; grossPayments: number; txdxDeductions: number; pipDeductions: number; atfpPenalty: number; netPayment: number };
+    nercTcn: { invoice: number; totalInflow: number; grossPayments: number; txdxDeductions: number; pipDeductions: number; atfpPenalty: number; netPayment: number };
+    nercGenco: { invoice: number; totalInflow: number; grossPayments: number; txdxDeductions: number; pipDeductions: number; atfpPenalty: number; netPayment: number };
+    nercDisco: { invoice: number; totalInflow: number; grossPayments: number; txdxDeductions: number; pipDeductions: number; atfpPenalty: number; netPayment: number };
+    total: { invoice: number; totalInflow: number; grossPayments: number; txdxDeductions: number; pipDeductions: number; atfpPenalty: number; netPayment: number };
+  };
+
+  // BEDCO/PHEDC/BEDC specific data (if applicable)
+  bedcData?: {
+    invoice: number;
+    totalInflow: number;
+    grossPayments: number;
+    txdxDeductions: number;
+    pipDeductions: number;
+    atfpPenalty: number;
+    netPayment: number;
+  };
+
+  status: 'draft' | 'approved' | 'disbursed';
+  approvedBy?: string;
+  approvedAt?: Date;
+  disbursedAt?: Date;
+}
+
+// Zungeru Energy Disbursement (Image 8 structure)
+export interface ZungeruDisbursementSchedule {
+  id: string;
+  scheduleNumber: string;
+  period: string;
+  createdAt: Date;
+
+  // Beneficiaries
+  beneficiaries: {
+    name: string;
+    category: ServiceProviderCategory;
+    bankName: string;
+    accountNumber: string;
+    grossInvoice: number; // MAR value
+    totalInflow: number; // #REF! initially
+    grossAmountPaid: number;
+    pipDeduction: number; // 55.04% & 46.70% for gross invoice
+    netPayment: number;
+    comments?: string;
+  }[];
+
+  // Totals
+  totalGrossInvoice: number;
+  totalInflow: number;
+  totalGrossPayment: number;
+  totalPipDeduction: number;
+  totalNetPayment: number;
+
+  status: 'draft' | 'approved' | 'disbursed';
+  approvedBy?: string;
+  approvedAt?: Date;
+}
+
+// Regulatory Charge Disbursement (Image 9 - top section)
+export interface RegulatoryChargeDisbursement {
+  id: string;
+  period: string;
+  serviceProviderId: string;
+  serviceProviderName: string;
+  category: 'nerc_disco' | 'kogi_serc' | 'ekiti_serc' | 'enugu_serc' | 'ondo_serc';
+
+  accountDetails: string;
+  bankName: string;
+  invoice: number;
+  totalInflow: number;
+  netPayment: number;
+
+  createdAt: Date;
+}
+
+// Supplementary DISCO Disbursement (Image 9 - bottom section)
+export interface SupplementaryDiscoDisbursement {
+  id: string;
+  period: string;
+  beneficiaries: {
+    name: string;
+    category: ServiceProviderCategory;
+    accountDetails: string;
+    invoice: number;
+    totalInflow: number;
+    grossPayments: number;
+    pipDeductions: number;
+    netPayment: number;
+  }[];
+
+  // Implementation project tracking
+  tcnPipImplementationProject?: {
+    accountName: string;
+    accountNumber: string;
+    amount: number;
+  };
+  afamPowerPlc?: {
+    accountName: string;
+    accountNumber: string;
+    amount: number;
+  };
+
+  totalInvoice: number;
+  totalInflow: number;
+  totalGrossPayments: number;
+  totalPipDeductions: number;
+  totalNetPayment: number;
+}
+
+// Dashboard Reports (Image 10 structure)
+export interface DiscoPaymentReport {
+  period: string;
+  discoId: string;
+  discoCode: string;
+  discoName: string;
+
+  // May 2025 Invoice
+  mayInvoice: number;
+  amountRemitted: number; // Payment received
+  txdxNetOff: number; // Tax offset
+  atfpPenalty: number;
+  discoOutstanding: number; // Outstanding balance
+
+  createdAt: Date;
+}
+
+export interface ZungeruPaymentReport {
+  period: string;
+  discoId: string;
+  discoCode: string;
+  discoName: string;
+
+  // Zungeru specific
+  mayInvoice: number;
+  amountRemittedZungeru: number;
+  discoOutstanding: number;
+
+  createdAt: Date;
+}
+
+// Service Provider Payment Report (Image 10 - bottom section)
+export interface ServiceProviderPaymentReport {
+  period: string;
+
+  ancillaryServices: {
+    mayInvoice: number;
+    amountDisbursed: number;
+    pipAmount: number;
+    outstanding: number;
+  };
+  mo: {
+    mayInvoice: number;
+    amountDisbursed: number;
+    pipAmount: number;
+    outstanding: number;
+  };
+  nbet: {
+    mayInvoice: number;
+    amountDisbursed: number;
+    pipAmount: number;
+    outstanding: number;
+  };
+  nerc: {
+    mayInvoice: number;
+    amountDisbursed: number;
+    pipAmount: number;
+    outstanding: number;
+  };
+  so: {
+    mayInvoice: number;
+    amountDisbursed: number;
+    pipAmount: number;
+    txdxDeductions: number;
+    atfpPenalty: number;
+    outstanding: number;
+  };
+  tsp: {
+    mayInvoice: number;
+    amountDisbursed: number;
+    pipAmount: number;
+    txdxDeductions: number;
+    atfpPenalty: number;
+    outstanding: number;
+  };
+
+  // Totals
+  totalInvoice: number;
+  totalDisbursed: number;
+  totalPip: number;
+  totalTxdx: number;
+  totalAtfp: number;
+  totalOutstanding: number;
+}
+
+// Multi-Period Tracking (Image 12 structure)
+export interface MultiPeriodTracking {
+  discoId: string;
+  discoCode: string;
+  discoName: string;
+
+  // NISO columns for different periods
+  nisoJune2024: number;
+  nisoSept2024: number;
+  nisoJune2025: number;
+
+  // TIF Payment
+  tifPaymentJune2025: number;
+
+  // TXDX Net-Off
+  txdxNetOffJuly2025: number;
+
+  // Zungeru tracking
+  zungeruJune2025: number;
+  zungeruTifNetOffJune2025: number;
+
+  // Totals
+  total: number;
+}
+
+// Vesting Contract Revenue Summary (Image 12 - bottom table)
+export interface VestingContractRevenueSummary {
+  id: string;
+  period: string;
+
+  // All entities totals
+  tcn: number;
+  niso: number;
+  tif: number;
+  as: number; // Ancillary Services
+  nbet: number;
+  tcnNisoNerc: number;
+  gencoNerc: number;
+  discoNerc: number;
+
+  // With Zungeru
+  discoNercWithoutZungeru?: number;
+  nercTotal: number;
+
+  totalInvoiceAmount: number;
+
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+// Comprehensive DISCO Financial Summary
+export interface ComprehensiveDiscoFinancialSummary {
+  period: string;
+  discoId: string;
+  discoCode: string;
+  discoName: string;
+
+  // Invoice breakdown
+  invoiceLineItem: DiscoInvoiceLineItem;
+
+  // Inflow and disbursement
+  inflowRecord: DiscoInflowRecord;
+
+  // Indebtedness
+  indebtedness: DiscoIndebtedness;
+  serviceProviderIndebtedness: ServiceProviderIndebtedness;
+
+  // TIF payments
+  tifPayment: TifPaymentRecord;
+
+  // Payment reports
+  paymentReport: DiscoPaymentReport;
+  zungeruReport: ZungeruPaymentReport;
+
+  // Multi-period tracking
+  multiPeriod: MultiPeriodTracking;
+
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+// DISCO Financial Cycle (complete settlement cycle)
+export interface DiscoFinancialCycle {
+  id: string;
+  cycleNumber: string;
+  period: string;
+  month: number;
+  year: number;
+  status: 'draft' | 'invoiced' | 'collecting' | 'disbursing' | 'reconciling' | 'closed';
+
+  // All DISCOs summary
+  discoSummaries: ComprehensiveDiscoFinancialSummary[];
+
+  // Market operator schedules
+  marketOperatorSchedule: MarketOperatorDisbursementSchedule;
+  zungeruSchedule: ZungeruDisbursementSchedule;
+
+  // Regulatory and supplementary
+  regulatoryDisbursements: RegulatoryChargeDisbursement[];
+  supplementaryDisbursements: SupplementaryDiscoDisbursement[];
+
+  // Service provider reports
+  serviceProviderReport: ServiceProviderPaymentReport;
+
+  // Vesting contract
+  vestingContractSummary: VestingContractRevenueSummary;
+
+  // Cycle metadata
+  startDate: Date;
+  endDate: Date;
+  invoicedAt?: Date;
+  closedAt?: Date;
+  closedBy?: string;
+
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+// ==========================================
+// DETAILED DISCO STATEMENT (Individual)
+// Based on Port Harcourt statement structure
+// ==========================================
+
+// Charge Code Categories
+export type DiscoChargeCodeCategory =
+  | 'MET' // Metered Energy Charges
+  | 'CEA' // Contract Excess Adjustment (AECC)
+  | 'DLR' // Disco Loss of Revenue (LoRRD)
+  | 'TLR' // TSP Loss of Revenue (LoRFT)
+  | 'TL' // Transmission Loss Factor
+  | 'LQD'; // Liquidated Damages / PPA Adjustments
+
+// Service Provider Codes
+export type ServiceProviderCode =
+  | 'TSP' // Transmission Service Provider
+  | 'SO' // System Operator
+  | 'TIF' // Transmission Infrastructure Fund
+  | 'ANC' // Ancillary Services
+  | 'NBET' // Nigerian Bulk Electricity Trader
+  | 'GRC' // GENCO Regulatory Charge
+  | 'TRC' // TCN/NISO Regulatory Charge
+  | 'DRC' // DISCO Regulatory Charge
+  | 'DTD' // TCN Capacity Use Refund
+  | 'GSD' // Grid Use Balancing
+  | 'GDT'; // TCN Portion of Shared Liquidated Damages
+
+// Individual Charge Line Item
+export interface DiscoStatementChargeLineItem {
+  id: string;
+  chargeCode: string; // e.g., "1.1 MET.TSP", "2.1 CEA.TSP"
+  category: DiscoChargeCodeCategory;
+  serviceProvider: ServiceProviderCode;
+  description: string;
+  notes: string; // A, B, C, D, etc.
+  amount: number;
+  sequence: number; // For ordering (1.1, 1.2, 2.1, etc.)
+}
+
+// Energy Accounting (Table 1 - KWh level)
+export interface ContractEnergyAccounting {
+  discoId: string;
+  discoCode: string;
+  discoName: string;
+  period: string;
+
+  // Column I - Metered Reading
+  meterReadingKwh: number;
+
+  // Column II - MYTO Excess Adjustment
+  mytoExcessAdjustmentKwh: number;
+
+  // Column III - DISCO Energy Deficit
+  discoEnergyDeficitKwh: number;
+
+  // Column IV - TCN Deficit
+  tcnDeficitKwh: number;
+
+  // Column TLF - Transmission Loss Factor
+  transmissionLossFactorKwh: number;
+
+  // Column V - Bilateral Meter Reading (if applicable)
+  bilateralMeterReadingKwh?: number;
+
+  // Total
+  totalKwh: number;
+
+  // Generation shortage tracking
+  mytoRequirementKwh: number;
+  generationShortageKwh: number;
+  adjustedMytoKwh: number;
+}
+
+// Invoice Derivation (Table 2 - Naira level)
+export interface InvoiceDerivation {
+  discoId: string;
+  discoCode: string;
+  discoName: string;
+  period: string;
+  notes: string; // A, B, C, etc.
+
+  // Service provider details
+  entity: string; // TCN, NISO, TIF, AS, NBET, etc.
+  ratePerKwh: number;
+
+  // Column I - Meter Reading Billing
+  meterReadingBilling: number;
+
+  // Column II - MYTO Excess Adjustment
+  mytoExcessAdjustment: number;
+
+  // Column III - Loss of Revenue: Disco to Service Providers
+  lossOfRevenueDiscoToSp: number;
+
+  // Column IV - Loss of Revenue: TCN to Service Providers/Disco
+  lossOfRevenueTcnToSpOrDisco: number;
+
+  // Column TLF - Transmission Loss Factor Gain/Loss
+  tlf: number;
+
+  // Column V (optional) - Bilateral Meter Reading
+  bilateralMeterReading?: number;
+
+  // Total
+  total: number;
+}
+
+// Detailed Individual DISCO Statement
+export interface DetailedDiscoStatement {
+  id: string;
+  statementNumber: string;
+  period: string;
+  month: number;
+  year: number;
+
+  // Participant details
+  participantName: string; // e.g., "PORT HARCOURT ELECTRICITY DISTRIBUTION PLC"
+  contractId: string; // e.g., "NBET/035"
+  participantRepName: string;
+  participantRepAddress: string;
+
+  // Title
+  title: string; // "FINAL MARKET SETTLEMENT STATEMENT: JUNE 2025 Total"
+
+  // All charge line items (grouped by category)
+  chargeLineItems: DiscoStatementChargeLineItem[];
+
+  // Subtotals by category
+  meteredEnergyChargesTotal: number; // Section 1
+  contractExcessAdjustmentTotal: number; // Section 2
+  discoLossOfRevenueTotal: number; // Section 3
+  tspLossOfRevenueTotal: number; // Section 4
+  transmissionLossFactorTotal: number; // Section 5
+  ppAdjustmentsTotal: number; // Section 6
+
+  // Zungeru Energy Credit
+  zungeruEnergyCreditNaira: number;
+
+  // Period total
+  june2025Total: number;
+
+  // Outstanding
+  outstandingInvoices: number;
+  currentAmountDue: number;
+
+  // Amount in words
+  amountInWords: string;
+
+  // Energy accounting tables
+  energyAccounting: ContractEnergyAccounting;
+  invoiceDerivations: InvoiceDerivation[];
+
+  // Explanatory notes (18 detailed notes)
+  explanatoryNotes: DiscoStatementExplanatoryNote[];
+
+  // Workflow
+  status: DiscoStatementStatus;
+  draftedBy?: string;
+  draftedAt?: Date;
+  approvedBy?: string;
+  approvedAt?: Date;
+  sentTo?: string;
+  sentAt?: Date;
+
+  // Metadata
+  pdfUrl?: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+// Explanatory Note Structure
+export interface DiscoStatementExplanatoryNote {
+  id: string;
+  noteNumber: number;
+  category: 'regulation' | 'calculation' | 'reference' | 'formula' | 'shortage' | 'other';
+  title?: string;
+  content: string;
+  subNotes?: {
+    letter: string; // a, b, c
+    content: string;
+  }[];
+  nercReference?: string; // e.g., "NERC/2023/034", "NERC/15/0011"
+  tableReference?: string; // e.g., "Table 1", "Column IV"
+}
+
+// MYTO (Multi-Year Tariff Order) Allocation
+export interface MytoAllocation {
+  discoId: string;
+  discoCode: string;
+  discoName: string;
+  period: string;
+
+  // MYTO requirement
+  mytoRequirementKwh: number;
+
+  // Actual allocation
+  actualAllocationKwh: number;
+
+  // Excess (if any)
+  excessKwh: number;
+
+  // Deficit (if any)
+  deficitKwh: number;
+
+  // Generation shortage
+  generationShortageKwh: number;
+
+  // Adjusted MYTO
+  adjustedMytoKwh: number;
+}
+
+// Loss of Revenue Calculation
+export interface LossOfRevenueCalculation {
+  id: string;
+  discoId: string;
+  discoCode: string;
+  discoName: string;
+  period: string;
+
+  // Disco to Service Providers (Section 3)
+  discoToSpEnergyKwh: number;
+  discoToSpRatePerKwh: number;
+  discoToSpTotal: number;
+
+  // TCN to Disco/Service Providers (Section 4)
+  tcnToDiscoEnergyKwh: number;
+  tcnToDiscoRatePerKwh: number;
+  tcnToDiscoTotal: number;
+
+  // Net compensation
+  netCompensation: number;
+}
+
+// Transmission Loss Factor (TLF) Calculation
+export interface TlfCalculation {
+  id: string;
+  discoId: string;
+  discoCode: string;
+  discoName: string;
+  period: string;
+
+  // TLF values
+  actualTlf: number; // Actual percentage
+  benchmarkTlf: number; // 7.00%
+  tlfDifference: number;
+
+  // Energy impact
+  tlfEnergyGainLossKwh: number;
+
+  // Financial impact
+  averageCostOfGeneration: number; // N/KWh
+  tlfAmountNaira: number;
+
+  // Applied to
+  appliedToDiscos: boolean;
+  appliedToTsp: boolean;
+}
+
+// PPA (Power Purchase Agreement) Adjustments
+export interface PpaAdjustment {
+  id: string;
+  type: 'capacity_refund' | 'grid_balancing' | 'liquidated_damages';
+  discoId: string;
+  discoCode: string;
+  period: string;
+
+  // Capacity refund
+  tcnCapacityRefundKwh?: number;
+  tcnCapacityRefundNaira?: number;
+
+  // Grid use balancing
+  gridUseBalancingCreditOrDebit?: number;
+
+  // Liquidated damages
+  totalGencoLiquidatedDamageKwh?: number;
+  totalGencoLiquidatedDamageNaira?: number;
+  discoPortionPercentage?: number;
+  discoPortionKwh?: number;
+  discoPortionNaira?: number;
+
+  // Refund to TSP
+  refundToTsp?: number;
+}
+
+// Generation Shortage Tracking
+export interface GenerationShortage {
+  id: string;
+  period: string;
+
+  // Shortage details
+  mytoRequirementKwh: number;
+  generationShortageKwh: number;
+  adjustedMytoKwh: number;
+
+  // Impact on DISCOs
+  affectedDiscos: {
+    discoId: string;
+    discoCode: string;
+    allocationReductionKwh: number;
+    financialImpact: number;
+  }[];
+
+  // Total impact
+  totalShortageKwh: number;
+  totalFinancialImpact: number;
+
+  notes: string;
 }

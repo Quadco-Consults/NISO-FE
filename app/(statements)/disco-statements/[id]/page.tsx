@@ -1,0 +1,362 @@
+'use client';
+
+import { useState, useEffect } from 'react';
+import { useParams, useRouter } from 'next/navigation';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { Separator } from '@/components/ui/separator';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
+import {
+  ArrowLeft,
+  Download,
+  CheckCircle,
+  Send,
+  XCircle,
+  FileText,
+  Printer,
+} from 'lucide-react';
+import { discoStatementService } from '@/server/services/disco-statement-service';
+import type { DiscoStatement } from '@/types';
+import { toast } from 'sonner';
+import { formatCurrency } from '@/lib/utils/formatters';
+
+export default function DiscoStatementDetailPage() {
+  const params = useParams();
+  const router = useRouter();
+  const [statement, setStatement] = useState<DiscoStatement | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    loadStatement();
+  }, [params.id]);
+
+  const loadStatement = async () => {
+    setLoading(true);
+    try {
+      const data = await discoStatementService.getStatementById(params.id as string);
+      setStatement(data);
+    } catch (error) {
+      toast.error('Failed to load statement');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleApprove = async () => {
+    if (!statement) return;
+    try {
+      await discoStatementService.approveStatement(statement.id, 'Current User');
+      await loadStatement();
+      toast.success('Statement approved successfully');
+    } catch (error) {
+      toast.error('Failed to approve statement');
+    }
+  };
+
+  const handleSend = async () => {
+    if (!statement) return;
+    try {
+      await discoStatementService.sendStatement(statement.id, 'NERC');
+      await loadStatement();
+      toast.success('Statement sent successfully');
+    } catch (error) {
+      toast.error('Failed to send statement');
+    }
+  };
+
+  const handlePrint = () => {
+    window.print();
+  };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-lg">Loading...</div>
+      </div>
+    );
+  }
+
+  if (!statement) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen gap-4">
+        <div className="text-lg">Statement not found</div>
+        <Button onClick={() => router.back()}>Go Back</Button>
+      </div>
+    );
+  }
+
+  const getStatusBadge = (status: string) => {
+    const statusConfig: Record<string, { label: string; className: string }> = {
+      draft: { label: 'Draft', className: 'bg-gray-100 text-gray-800' },
+      pending_approval: { label: 'Pending Approval', className: 'bg-yellow-100 text-yellow-800' },
+      approved: { label: 'Approved', className: 'bg-green-100 text-green-800' },
+      sent: { label: 'Sent', className: 'bg-blue-100 text-blue-800' },
+      acknowledged: { label: 'Acknowledged', className: 'bg-purple-100 text-purple-800' },
+      disputed: { label: 'Disputed', className: 'bg-red-100 text-red-800' },
+    };
+
+    const config = statusConfig[status] || statusConfig.draft;
+    return (
+      <Badge variant="outline" className={config.className}>
+        {config.label}
+      </Badge>
+    );
+  };
+
+  return (
+    <div className="space-y-6 max-w-7xl mx-auto">
+      {/* Header Actions */}
+      <div className="flex items-center justify-between print:hidden">
+        <Button variant="outline" onClick={() => router.back()}>
+          <ArrowLeft className="mr-2 h-4 w-4" />
+          Back
+        </Button>
+        <div className="flex items-center gap-2">
+          {getStatusBadge(statement.status)}
+          {statement.status === 'pending_approval' && (
+            <Button onClick={handleApprove}>
+              <CheckCircle className="mr-2 h-4 w-4" />
+              Approve
+            </Button>
+          )}
+          {statement.status === 'approved' && (
+            <Button onClick={handleSend}>
+              <Send className="mr-2 h-4 w-4" />
+              Send to NERC
+            </Button>
+          )}
+          <Button variant="outline" onClick={handlePrint}>
+            <Printer className="mr-2 h-4 w-4" />
+            Print
+          </Button>
+          <Button variant="outline">
+            <Download className="mr-2 h-4 w-4" />
+            Download PDF
+          </Button>
+        </div>
+      </div>
+
+      {/* Statement Document */}
+      <div className="bg-white rounded-lg border p-8 print:border-0 print:shadow-none">
+        {/* Header */}
+        <div className="text-center mb-8">
+          <h1 className="text-2xl font-bold mb-2">NISO: MARKET OPERATIONS</h1>
+        </div>
+
+        {/* Recipient Details */}
+        <div className="grid grid-cols-2 gap-4 mb-6 border p-4 rounded">
+          <div>
+            <div className="text-sm font-semibold">Name:</div>
+            <div>{statement.recipientEntity}</div>
+          </div>
+          <div>
+            <div className="text-sm font-semibold">Number:</div>
+            <div>{statement.recipientCode}</div>
+          </div>
+          <div>
+            <div className="text-sm font-semibold">Representative Name:</div>
+            <div>{statement.representativeName}</div>
+          </div>
+          <div>
+            <div className="text-sm font-semibold">Address:</div>
+            <div>{statement.address}</div>
+          </div>
+        </div>
+
+        {/* Title */}
+        <div className="text-center bg-black text-white p-3 mb-6">
+          <h2 className="font-bold">{statement.title}</h2>
+        </div>
+
+        {/* DisCo Charges Table */}
+        <div className="mb-6">
+          <div className="bg-gray-100 p-2 font-semibold mb-2">
+            Description of Charge
+          </div>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Distribution Company</TableHead>
+                <TableHead>Notes</TableHead>
+                <TableHead className="text-right">Amount (Naira)</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {statement.discoCharges.map((charge) => (
+                <TableRow key={charge.discoId}>
+                  <TableCell>{charge.discoName}</TableCell>
+                  <TableCell className="text-center">{charge.columnCode}</TableCell>
+                  <TableCell className="text-right font-mono">
+                    {formatCurrency(charge.amount)}
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
+
+        {/* Zungeru Credit */}
+        <div className="mb-6">
+          <Table>
+            <TableBody>
+              <TableRow>
+                <TableCell className="font-semibold bg-gray-100">
+                  Zungeru Energy Credit (Naira)
+                </TableCell>
+                <TableCell className="text-right font-mono">
+                  ({formatCurrency(Math.abs(statement.zungeruEnergyCreditNaira))})
+                </TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
+        </div>
+
+        <Separator className="my-6" />
+
+        {/* Total */}
+        <div className="mb-6">
+          <Table>
+            <TableBody>
+              <TableRow>
+                <TableCell className="font-bold text-lg">
+                  {statement.period} Total
+                </TableCell>
+                <TableCell className="text-right font-bold text-lg">
+                  {formatCurrency(statement.totalAmount)}
+                </TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
+        </div>
+
+        <Separator className="my-6" />
+
+        {/* Outstanding */}
+        <div className="mb-6">
+          <div className="bg-gray-100 p-2 font-semibold mb-2">
+            Outstanding as at {new Date(statement.createdAt).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
+          </div>
+          <Table>
+            <TableBody>
+              <TableRow>
+                <TableCell className="font-semibold">
+                  Current Amount Due To<br />
+                  {statement.recipientEntity}
+                </TableCell>
+                <TableCell className="text-right font-mono text-lg font-bold">
+                  {formatCurrency(statement.outstandingCurrentMonth)}
+                </TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
+        </div>
+
+        <Separator className="my-6" />
+
+        {/* Amount in Words */}
+        <div className="mb-8">
+          <div className="bg-gray-100 p-2 font-semibold mb-2">
+            Amount in Words (Naira)
+          </div>
+          <div className="p-4 border rounded">
+            {statement.amountInWords}
+          </div>
+        </div>
+
+        {/* Signature Section */}
+        <div className="grid grid-cols-2 gap-8 mb-8">
+          <div>
+            <div className="font-semibold mb-2">Duly Authorised Signature:</div>
+            <div className="border-b-2 border-black h-16 mb-2"></div>
+          </div>
+          <div>
+            <div className="font-semibold mb-2">Date:</div>
+            <div className="border-b-2 border-black h-16 mb-2"></div>
+          </div>
+        </div>
+
+        <Separator className="my-8" />
+
+        {/* Footer */}
+        <div className="text-center text-sm text-gray-600 mb-6">
+          NIGERIA ELECTRICITY REGULATORY COMMISSION
+        </div>
+
+        {/* Explanatory Notes */}
+        {statement.explanatoryNotes.length > 0 && (
+          <div className="mt-8">
+            <div className="bg-black text-white p-3 text-center font-bold mb-4">
+              Explanatory Notes to Invoice
+            </div>
+            <ol className="space-y-3 text-sm">
+              {statement.explanatoryNotes.map((note, index) => (
+                <li key={index} className="flex gap-2">
+                  <span className="font-semibold">{index + 1}.</span>
+                  <span>{note}</span>
+                </li>
+              ))}
+            </ol>
+          </div>
+        )}
+
+        {/* NERC References */}
+        {statement.nercReferences.length > 0 && (
+          <div className="mt-6">
+            <div className="font-semibold mb-2">NERC Order References:</div>
+            <div className="flex flex-wrap gap-2">
+              {statement.nercReferences.map((ref, index) => (
+                <Badge key={index} variant="outline">
+                  {ref}
+                </Badge>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Workflow Information */}
+      <div className="bg-gray-50 rounded-lg border p-6 print:hidden">
+        <h3 className="font-semibold mb-4">Workflow Information</h3>
+        <div className="grid grid-cols-2 gap-4 text-sm">
+          <div>
+            <span className="text-muted-foreground">Drafted By:</span>
+            <div className="font-medium">{statement.draftedBy || 'N/A'}</div>
+          </div>
+          <div>
+            <span className="text-muted-foreground">Drafted At:</span>
+            <div className="font-medium">
+              {statement.draftedAt ? new Date(statement.draftedAt).toLocaleString() : 'N/A'}
+            </div>
+          </div>
+          <div>
+            <span className="text-muted-foreground">Approved By:</span>
+            <div className="font-medium">{statement.approvedBy || 'N/A'}</div>
+          </div>
+          <div>
+            <span className="text-muted-foreground">Approved At:</span>
+            <div className="font-medium">
+              {statement.approvedAt ? new Date(statement.approvedAt).toLocaleString() : 'N/A'}
+            </div>
+          </div>
+          <div>
+            <span className="text-muted-foreground">Sent To:</span>
+            <div className="font-medium">{statement.sentTo || 'N/A'}</div>
+          </div>
+          <div>
+            <span className="text-muted-foreground">Sent At:</span>
+            <div className="font-medium">
+              {statement.sentAt ? new Date(statement.sentAt).toLocaleString() : 'N/A'}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}

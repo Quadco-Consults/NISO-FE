@@ -22,9 +22,10 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Plus, Search, Download, CheckCircle, XCircle, Clock, Send } from 'lucide-react';
+import { Plus, Search, Download, CheckCircle, XCircle, Clock, Send, FileText, Zap, Building2, Scale, PiggyBank, ArrowRight } from 'lucide-react';
 import { formatCurrency, formatDateTime, getStatusColor } from '@/lib/utils/formatters';
 import type { Disbursement } from '@/types';
+import Link from 'next/link';
 
 // Mock data
 const mockDisbursements: Disbursement[] = [
@@ -173,6 +174,129 @@ export default function DisbursementsPage() {
             <Plus className="h-4 w-4" />
             Create Disbursement
           </Button>
+        </div>
+
+        {/* Quick Access Reports */}
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          <Link href="/disbursements/disco-payments">
+            <Card className="hover:shadow-lg transition-shadow cursor-pointer border-2 hover:border-blue-400">
+              <CardHeader>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="p-3 bg-blue-100 rounded-lg">
+                      <FileText className="h-6 w-6 text-blue-600" />
+                    </div>
+                    <div>
+                      <CardTitle className="text-lg">DISCO Payments</CardTitle>
+                      <p className="text-sm text-muted-foreground">May 2025 Report</p>
+                    </div>
+                  </div>
+                  <ArrowRight className="h-5 w-5 text-muted-foreground" />
+                </div>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm text-muted-foreground">
+                  View DISCO payments and outstanding for all service providers
+                </p>
+              </CardContent>
+            </Card>
+          </Link>
+
+          <Link href="/disbursements/zungeru">
+            <Card className="hover:shadow-lg transition-shadow cursor-pointer border-2 hover:border-yellow-400">
+              <CardHeader>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="p-3 bg-yellow-100 rounded-lg">
+                      <Zap className="h-6 w-6 text-yellow-600" />
+                    </div>
+                    <div>
+                      <CardTitle className="text-lg">Zungeru Payments</CardTitle>
+                      <p className="text-sm text-muted-foreground">Energy Credits</p>
+                    </div>
+                  </div>
+                  <ArrowRight className="h-5 w-5 text-muted-foreground" />
+                </div>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm text-muted-foreground">
+                  Zungeru energy credit distribution and service provider payments
+                </p>
+              </CardContent>
+            </Card>
+          </Link>
+
+          <Link href="/disbursements/market-operator">
+            <Card className="hover:shadow-lg transition-shadow cursor-pointer border-2 hover:border-green-400">
+              <CardHeader>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="p-3 bg-green-100 rounded-lg">
+                      <Building2 className="h-6 w-6 text-green-600" />
+                    </div>
+                    <div>
+                      <CardTitle className="text-lg">Market Operator</CardTitle>
+                      <p className="text-sm text-muted-foreground">MO Schedule</p>
+                    </div>
+                  </div>
+                  <ArrowRight className="h-5 w-5 text-muted-foreground" />
+                </div>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm text-muted-foreground">
+                  Market operator disbursement schedule with bank details
+                </p>
+              </CardContent>
+            </Card>
+          </Link>
+
+          <Link href="/disbursements/regulatory">
+            <Card className="hover:shadow-lg transition-shadow cursor-pointer border-2 hover:border-purple-400">
+              <CardHeader>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="p-3 bg-purple-100 rounded-lg">
+                      <Scale className="h-6 w-6 text-purple-600" />
+                    </div>
+                    <div>
+                      <CardTitle className="text-lg">Regulatory Charges</CardTitle>
+                      <p className="text-sm text-muted-foreground">NERC & SERCs</p>
+                    </div>
+                  </div>
+                  <ArrowRight className="h-5 w-5 text-muted-foreground" />
+                </div>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm text-muted-foreground">
+                  NERC and State Electricity Regulatory Commission payments
+                </p>
+              </CardContent>
+            </Card>
+          </Link>
+
+          <Link href="/disbursements/supplementary">
+            <Card className="hover:shadow-lg transition-shadow cursor-pointer border-2 hover:border-orange-400">
+              <CardHeader>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="p-3 bg-orange-100 rounded-lg">
+                      <PiggyBank className="h-6 w-6 text-orange-600" />
+                    </div>
+                    <div>
+                      <CardTitle className="text-lg">Supplementary</CardTitle>
+                      <p className="text-sm text-muted-foreground">Special Funds</p>
+                    </div>
+                  </div>
+                  <ArrowRight className="h-5 w-5 text-muted-foreground" />
+                </div>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm text-muted-foreground">
+                  AFAM Power, TCN PIP, and other supplementary disbursements
+                </p>
+              </CardContent>
+            </Card>
+          </Link>
         </div>
 
         {/* Stats */}

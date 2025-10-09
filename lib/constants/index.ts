@@ -19,7 +19,57 @@ export const USER_ROLES = {
   finance_manager: 'Finance Manager',
   debt_collector: 'Debt Collector',
   customer_service: 'Customer Service',
+  auditor: 'Auditor',
+  entity_user: 'Entity User',
   viewer: 'Viewer',
+} as const;
+
+// Entity Types (Power Sector Organizations)
+export const ENTITY_TYPES = {
+  niso: 'NISO (System Operator)',
+  disco: 'DisCo (Distribution Company)',
+  genco: 'GenCo (Generation Company)',
+  tcn: 'TCN (Transmission Company)',
+  tif: 'TIF (Transitional Fund)',
+  nerc: 'NERC (Regulatory Commission)',
+  nbet: 'NBET (Bulk Trading)',
+  ipp: 'IPP (Independent Power Producer)',
+  trader: 'Energy Trader',
+} as const;
+
+// User Statuses
+export const USER_STATUSES = {
+  active: 'Active',
+  inactive: 'Inactive',
+  suspended: 'Suspended',
+  pending: 'Pending Activation',
+} as const;
+
+// Permission Modules
+export const PERMISSION_MODULES = {
+  dashboard: 'Dashboard',
+  customers: 'Customer Management',
+  billing: 'Billing & Invoicing',
+  payments: 'Payment Processing',
+  disbursements: 'Disbursements',
+  settlements: 'Settlements',
+  collections: 'Debt Collections',
+  treasury: 'Treasury Management',
+  reconciliation: 'Reconciliation',
+  reports: 'Reports & Analytics',
+  audit: 'Audit Trail',
+  users: 'User Management',
+  settings: 'System Settings',
+} as const;
+
+// Permission Actions
+export const PERMISSION_ACTIONS = {
+  view: 'View',
+  create: 'Create',
+  edit: 'Edit',
+  delete: 'Delete',
+  approve: 'Approve',
+  export: 'Export',
 } as const;
 
 // Invoice Types
@@ -124,53 +174,25 @@ export const NAVIGATION = [
     icon: 'LayoutDashboard',
     roles: ['all'],
   },
+  // Financial Settlement & Statement Management
   {
-    title: 'Grid Operations',
-    href: '/dashboard/grid',
-    icon: 'Zap',
-    roles: ['super_admin', 'admin', 'grid_operator'],
-  },
-  {
-    title: 'Market Operations',
-    href: '/market',
-    icon: 'TrendingUp',
-    roles: ['super_admin', 'admin', 'market_operator'],
-  },
-  {
-    title: 'Customers',
-    href: '/customers',
-    icon: 'Users',
-    roles: ['super_admin', 'admin', 'customer_service', 'billing_manager'],
-  },
-  {
-    title: 'Billing',
-    href: '/billing',
+    title: 'DISCO Statements',
+    href: '/disco-statements',
     icon: 'FileText',
-    roles: ['super_admin', 'admin', 'billing_manager'],
-  },
-  {
-    title: 'Settlements',
-    href: '/settlement',
-    icon: 'Calculator',
     roles: ['super_admin', 'admin', 'billing_manager', 'finance_manager'],
   },
+  {
+    title: 'Bilateral Statements',
+    href: '/bilateral-statements',
+    icon: 'FileText',
+    roles: ['super_admin', 'admin', 'billing_manager', 'finance_manager'],
+  },
+  // Payment & Disbursement Management
   {
     title: 'Payments',
     href: '/payments',
     icon: 'CreditCard',
     roles: ['super_admin', 'admin', 'finance_manager'],
-  },
-  {
-    title: 'Payment Mapping',
-    href: '/payment-mapping',
-    icon: 'Link2',
-    roles: ['super_admin', 'admin', 'finance_manager'],
-  },
-  {
-    title: 'Collections',
-    href: '/collections',
-    icon: 'AlertCircle',
-    roles: ['super_admin', 'admin', 'debt_collector', 'finance_manager'],
   },
   {
     title: 'Service Providers',
@@ -184,6 +206,7 @@ export const NAVIGATION = [
     icon: 'Send',
     roles: ['super_admin', 'admin', 'finance_manager'],
   },
+  // Treasury & Banking
   {
     title: 'Treasury',
     href: '/treasury',
@@ -202,18 +225,7 @@ export const NAVIGATION = [
     icon: 'CheckCircle2',
     roles: ['super_admin', 'admin', 'finance_manager'],
   },
-  {
-    title: 'Risk Management',
-    href: '/risk-management',
-    icon: 'Shield',
-    roles: ['super_admin', 'admin', 'finance_manager'],
-  },
-  {
-    title: 'Finance',
-    href: '/finance',
-    icon: 'DollarSign',
-    roles: ['super_admin', 'admin', 'finance_manager'],
-  },
+  // Reports & System Management
   {
     title: 'Reports',
     href: '/reports',
@@ -221,9 +233,9 @@ export const NAVIGATION = [
     roles: ['all'],
   },
   {
-    title: 'Audit Trail',
-    href: '/audit-trail',
-    icon: 'FileSearch',
+    title: 'User Management',
+    href: '/users',
+    icon: 'Users',
     roles: ['super_admin', 'admin'],
   },
   {
@@ -232,4 +244,70 @@ export const NAVIGATION = [
     icon: 'Settings',
     roles: ['super_admin', 'admin'],
   },
+
+  // ========================================
+  // HIDDEN MODULES (Temporarily Disabled)
+  // ========================================
+  // Uncomment when needed for future development
+
+  // {
+  //   title: 'Grid Operations',
+  //   href: '/dashboard/grid',
+  //   icon: 'Zap',
+  //   roles: ['super_admin', 'admin', 'grid_operator'],
+  // },
+  // {
+  //   title: 'Market Operations',
+  //   href: '/market',
+  //   icon: 'TrendingUp',
+  //   roles: ['super_admin', 'admin', 'market_operator'],
+  // },
+  // {
+  //   title: 'Customers',
+  //   href: '/customers',
+  //   icon: 'Users',
+  //   roles: ['super_admin', 'admin', 'customer_service', 'billing_manager'],
+  // },
+  // {
+  //   title: 'Billing',
+  //   href: '/billing',
+  //   icon: 'FileText',
+  //   roles: ['super_admin', 'admin', 'billing_manager'],
+  // },
+  // {
+  //   title: 'Settlements',
+  //   href: '/settlement',
+  //   icon: 'Calculator',
+  //   roles: ['super_admin', 'admin', 'billing_manager', 'finance_manager'],
+  // },
+  // {
+  //   title: 'Payment Mapping',
+  //   href: '/payment-mapping',
+  //   icon: 'Link2',
+  //   roles: ['super_admin', 'admin', 'finance_manager'],
+  // },
+  // {
+  //   title: 'Collections',
+  //   href: '/collections',
+  //   icon: 'AlertCircle',
+  //   roles: ['super_admin', 'admin', 'debt_collector', 'finance_manager'],
+  // },
+  // {
+  //   title: 'Risk Management',
+  //   href: '/risk-management',
+  //   icon: 'Shield',
+  //   roles: ['super_admin', 'admin', 'finance_manager'],
+  // },
+  // {
+  //   title: 'Finance',
+  //   href: '/finance',
+  //   icon: 'DollarSign',
+  //   roles: ['super_admin', 'admin', 'finance_manager'],
+  // },
+  // {
+  //   title: 'Audit Trail',
+  //   href: '/audit-trail',
+  //   icon: 'FileSearch',
+  //   roles: ['super_admin', 'admin', 'auditor'],
+  // },
 ];

@@ -8,6 +8,8 @@ interface AuthState {
   setUser: (user: User | null) => void;
   logout: () => void;
   hasRole: (roles: string | string[]) => boolean;
+  hasPermission: (permissionId: string) => boolean;
+  hasModuleAccess: (module: string) => boolean;
 }
 
 export const useAuthStore = create<AuthState>()(
@@ -28,6 +30,18 @@ export const useAuthStore = create<AuthState>()(
         if (roleArray.includes('all')) return true;
 
         return roleArray.includes(user.role);
+      },
+
+      hasPermission: (permissionId) => {
+        const { user } = get();
+        if (!user) return false;
+        return user.permissions?.includes(permissionId) || false;
+      },
+
+      hasModuleAccess: (module) => {
+        const { user } = get();
+        if (!user) return false;
+        return user.permissions?.some(p => p.startsWith(`${module}:`)) || false;
       },
     }),
     {
