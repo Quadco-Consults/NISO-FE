@@ -382,6 +382,172 @@ const PORT_HARCOURT_JUNE_2025_STATEMENT: DetailedDiscoStatement = {
   updatedAt: new Date('2025-06-30'),
 };
 
+// Helper function to generate charge line items with scaled amounts
+const generateChargeLineItems = (multiplier: number): DiscoStatementChargeLineItem[] => {
+  return PH_JUNE_2025_CHARGE_LINE_ITEMS.map(item => ({
+    ...item,
+    amount: item.amount * multiplier,
+  }));
+};
+
+// ==========================================
+// ABUJA JUNE 2025 STATEMENT
+// ==========================================
+const ABUJA_CHARGE_ITEMS = generateChargeLineItems(1.95);
+const ABUJA_TOTALS = calculateCategoryTotals(ABUJA_CHARGE_ITEMS);
+
+const ABUJA_JUNE_2025_STATEMENT: DetailedDiscoStatement = {
+  id: 'abuja-statement-202506',
+  statementNumber: 'NISO/ABUJA/2025/06',
+  period: 'June 2025',
+  month: 6,
+  year: 2025,
+  participantName: 'ABUJA ELECTRICITY DISTRIBUTION COMPANY',
+  contractId: 'NBET/001',
+  participantRepName: 'The Managing Director',
+  participantRepAddress: 'NO 1 ADETOKUNBO ADEMOLA CRESCENT, WUSE II, ABUJA',
+  title: 'FINAL MARKET SETTLEMENT STATEMENT: JUNE 2025 Total',
+  chargeLineItems: ABUJA_CHARGE_ITEMS,
+  ...ABUJA_TOTALS,
+  zungeruEnergyCreditNaira: (142941676.10),
+  june2025Total: 2970018667.15,
+  outstandingInvoices: 16665471874.10,
+  currentAmountDue: 19635490541.25,
+  amountInWords: 'Nineteen Billion, Six Hundred and Thirty-Five Million, Four Hundred and Ninety Thousand, Five Hundred and Forty-One Naira and Twenty-Five Kobo Only',
+  energyAccounting: {
+    discoId: 'ABUJA',
+    discoCode: 'ABUJA',
+    discoName: 'Abuja Electricity Distribution Company',
+    period: 'June 2025',
+    meterReadingKwh: 372275307,
+    mytoExcessAdjustmentKwh: 0,
+    discoEnergyDeficitKwh: 18244863,
+    tcnDeficitKwh: 6811331,
+    transmissionLossFactorKwh: 5662956,
+    totalKwh: 397332001,
+    mytoRequirementKwh: 397332001,
+    generationShortageKwh: 0,
+    adjustedMytoKwh: 397332001,
+  },
+  invoiceDerivations: [],
+  explanatoryNotes: PH_JUNE_2025_EXPLANATORY_NOTES,
+  status: 'approved',
+  draftedBy: 'System Generated',
+  draftedAt: new Date('2025-06-05'),
+  approvedBy: 'Ali Bukar Ahmad',
+  approvedAt: new Date('2025-06-28'),
+  createdAt: new Date('2025-06-01'),
+  updatedAt: new Date('2025-06-30'),
+};
+
+// ==========================================
+// EKO JUNE 2025 STATEMENT
+// ==========================================
+const EKO_CHARGE_ITEMS = generateChargeLineItems(1.46);
+const EKO_TOTALS = calculateCategoryTotals(EKO_CHARGE_ITEMS);
+
+const EKO_JUNE_2025_STATEMENT: DetailedDiscoStatement = {
+  id: 'eko-statement-202506',
+  statementNumber: 'NISO/EKO/2025/06',
+  period: 'June 2025',
+  month: 6,
+  year: 2025,
+  participantName: 'EKO ELECTRICITY DISTRIBUTION COMPANY',
+  contractId: 'NBET/012',
+  participantRepName: 'The Managing Director',
+  participantRepAddress: 'NO 24/25 MARINA, LAGOS ISLAND, LAGOS',
+  title: 'FINAL MARKET SETTLEMENT STATEMENT: JUNE 2025 Total',
+  chargeLineItems: EKO_CHARGE_ITEMS,
+  ...EKO_TOTALS,
+  zungeruEnergyCreditNaira: (107023622.41),
+  june2025Total: 2223706283.74,
+  outstandingInvoices: 12481237371.08,
+  currentAmountDue: 14704943654.82,
+  amountInWords: 'Fourteen Billion, Seven Hundred and Four Million, Nine Hundred and Forty-Three Thousand, Six Hundred and Fifty-Four Naira and Eighty-Two Kobo Only',
+  energyAccounting: {
+    discoId: 'EKO',
+    discoCode: 'EKO',
+    discoName: 'Eko Electricity Distribution Company',
+    period: 'June 2025',
+    meterReadingKwh: 278729578,
+    mytoExcessAdjustmentKwh: 0,
+    discoEnergyDeficitKwh: 13660256,
+    tcnDeficitKwh: 5099566,
+    transmissionLossFactorKwh: 4239957,
+    totalKwh: 297490400,
+    mytoRequirementKwh: 297490400,
+    generationShortageKwh: 0,
+    adjustedMytoKwh: 297490400,
+  },
+  invoiceDerivations: [],
+  explanatoryNotes: PH_JUNE_2025_EXPLANATORY_NOTES,
+  status: 'finalized',
+  draftedBy: 'System Generated',
+  draftedAt: new Date('2025-06-05'),
+  approvedBy: 'Ali Bukar Ahmad',
+  approvedAt: new Date('2025-06-28'),
+  createdAt: new Date('2025-06-01'),
+  updatedAt: new Date('2025-06-30'),
+};
+
+// ==========================================
+// IKEJA JUNE 2025 STATEMENT
+// ==========================================
+const IKEJA_CHARGE_ITEMS = generateChargeLineItems(2.15);
+const IKEJA_TOTALS = calculateCategoryTotals(IKEJA_CHARGE_ITEMS);
+
+const IKEJA_JUNE_2025_STATEMENT: DetailedDiscoStatement = {
+  id: 'ikeja-statement-202506',
+  statementNumber: 'NISO/IKEJA/2025/06',
+  period: 'June 2025',
+  month: 6,
+  year: 2025,
+  participantName: 'IKEJA ELECTRICITY DISTRIBUTION COMPANY',
+  contractId: 'NBET/018',
+  participantRepName: 'The Managing Director',
+  participantRepAddress: 'NO 27 OBAFEMI AWOLOWO WAY, IKEJA, LAGOS',
+  title: 'FINAL MARKET SETTLEMENT STATEMENT: JUNE 2025 Total',
+  chargeLineItems: IKEJA_CHARGE_ITEMS,
+  ...IKEJA_TOTALS,
+  zungeruEnergyCreditNaira: (157602691.30),
+  june2025Total: 3274635966.08,
+  outstandingInvoices: 18380918189.70,
+  currentAmountDue: 21655554155.78,
+  amountInWords: 'Twenty-One Billion, Six Hundred and Fifty-Five Million, Five Hundred and Fifty-Four Thousand, One Hundred and Fifty-Five Naira and Seventy-Eight Kobo Only',
+  energyAccounting: {
+    discoId: 'IKEJA',
+    discoCode: 'IKEJA',
+    discoName: 'Ikeja Electricity Distribution Company',
+    period: 'June 2025',
+    meterReadingKwh: 410457941,
+    mytoExcessAdjustmentKwh: 0,
+    discoEnergyDeficitKwh: 20116131,
+    tcnDeficitKwh: 7509928,
+    transmissionLossFactorKwh: 6246772,
+    totalKwh: 437984120,
+    mytoRequirementKwh: 437984120,
+    generationShortageKwh: 0,
+    adjustedMytoKwh: 437984120,
+  },
+  invoiceDerivations: [],
+  explanatoryNotes: PH_JUNE_2025_EXPLANATORY_NOTES,
+  status: 'sent',
+  draftedBy: 'System Generated',
+  draftedAt: new Date('2025-06-05'),
+  approvedBy: 'Ali Bukar Ahmad',
+  approvedAt: new Date('2025-06-28'),
+  createdAt: new Date('2025-06-01'),
+  updatedAt: new Date('2025-06-30'),
+};
+
+// All statements array
+const ALL_STATEMENTS = [
+  PORT_HARCOURT_JUNE_2025_STATEMENT,
+  ABUJA_JUNE_2025_STATEMENT,
+  EKO_JUNE_2025_STATEMENT,
+  IKEJA_JUNE_2025_STATEMENT,
+];
+
 // ==========================================
 // SERVICE FUNCTIONS
 // ==========================================
@@ -392,7 +558,7 @@ export const detailedDiscoStatementService = {
    */
   async getDetailedStatements(): Promise<DetailedDiscoStatement[]> {
     await new Promise((resolve) => setTimeout(resolve, 300));
-    return [PORT_HARCOURT_JUNE_2025_STATEMENT];
+    return ALL_STATEMENTS;
   },
 
   /**
@@ -400,10 +566,8 @@ export const detailedDiscoStatementService = {
    */
   async getDetailedStatementById(id: string): Promise<DetailedDiscoStatement | null> {
     await new Promise((resolve) => setTimeout(resolve, 200));
-    if (id === PORT_HARCOURT_JUNE_2025_STATEMENT.id) {
-      return PORT_HARCOURT_JUNE_2025_STATEMENT;
-    }
-    return null;
+    const statement = ALL_STATEMENTS.find(s => s.id === id);
+    return statement || null;
   },
 
   /**

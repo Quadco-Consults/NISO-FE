@@ -176,7 +176,7 @@ export const NAVIGATION = [
   },
   // Financial Settlement & Statement Management
   {
-    title: 'DISCO Statements',
+    title: 'Disco',
     href: '/disco-statements',
     icon: 'FileText',
     roles: ['super_admin', 'admin', 'billing_manager', 'finance_manager'],

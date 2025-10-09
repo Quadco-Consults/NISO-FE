@@ -19,21 +19,15 @@ import {
 } from 'lucide-react';
 import { formatCurrency } from '@/lib/utils/formatters';
 
-// Mock data based on ZUNGERU PAYMENT REPORT
+// Mock data based on ZUNGERU PAYMENT REPORT - Top 5 DISCOs
 const zungeruPaymentsData = {
   period: 'May 2025',
   discos: [
     { code: 'ABUJA', invoice: 2322212540.70, remitted: 0, outstanding: 0 },
     { code: 'BENIN', invoice: 1593119505.77, remitted: 0, outstanding: 0 },
     { code: 'EKO', invoice: 2262059674.62, remitted: 0, outstanding: 0 },
-    { code: 'ENUGU', invoice: 1265421916.59, remitted: 0, outstanding: 0 },
     { code: 'IBADAN', invoice: 1897735233.86, remitted: 0, outstanding: 0 },
     { code: 'IKEJA', invoice: 2606852508.16, remitted: 0, outstanding: 0 },
-    { code: 'JOS', invoice: 723057150.68, remitted: 0, outstanding: 0 },
-    { code: 'KADUNA', invoice: 704149700.24, remitted: 0, outstanding: 0 },
-    { code: 'KANO', invoice: 858877910.00, remitted: 0, outstanding: 0 },
-    { code: 'P/H', invoice: 1068123205.45, remitted: 0, outstanding: 0 },
-    { code: 'YOLA', invoice: 492845332.97, remitted: 0, outstanding: 0 },
   ],
   serviceProviders: [
     { name: 'ANCILLARY SERV.', invoice: 77824808.58, disbursed: 77824808.58, pipDeductions: 0, outstanding: 0 },
@@ -284,7 +278,7 @@ export default function ZungeruPaymentReportPage() {
                   ))}
                   <div className="pt-2 border-t">
                     <div className="flex justify-between text-sm font-semibold">
-                      <span>Total (11 DISCOs)</span>
+                      <span>Total (5 DISCOs)</span>
                       <span className="font-mono">{formatCurrency(totalDiscoInvoice)}</span>
                     </div>
                   </div>

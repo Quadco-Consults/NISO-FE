@@ -20,21 +20,15 @@ import {
 } from 'lucide-react';
 import { formatCurrency } from '@/lib/utils/formatters';
 
-// Mock data based on MAY 2025 DASHBOARD REPORT
+// Mock data based on MAY 2025 DASHBOARD REPORT - Top 5 DISCOs
 const discoPaymentsData = {
   period: 'May 2025',
   discos: [
     { code: 'ABUJA', invoice: 3708657448.70, remitted: 2689359662.30, txdxNetOff: 135849357.43, atfpPenalty: 0, outstanding: 0 },
     { code: 'BENIN', invoice: 1278980018.16, remitted: 516228028.71, txdxNetOff: 295161664.35, atfpPenalty: 0, outstanding: 0 },
     { code: 'EKO', invoice: 2831219052.00, remitted: 1829903264.39, txdxNetOff: 266357283.25, atfpPenalty: 0, outstanding: 0 },
-    { code: 'ENUGU', invoice: 1825686304.83, remitted: 1242470357.23, txdxNetOff: 139274697.84, atfpPenalty: 0, outstanding: 0 },
     { code: 'IBADAN', invoice: 2404657915.02, remitted: 1711282414.58, txdxNetOff: 0, atfpPenalty: 0, outstanding: 0 },
     { code: 'IKEJA', invoice: 3270777519.27, remitted: 2221590523.05, txdxNetOff: 195143752.16, atfpPenalty: 0, outstanding: 0 },
-    { code: 'JOS', invoice: 1114164728.02, remitted: 529750905.88, txdxNetOff: 143445785.84, atfpPenalty: 440968036.30, outstanding: 440968036.30 },
-    { code: 'KADUNA', invoice: 1062644604.55, remitted: 80776546.54, txdxNetOff: 282851800.16, atfpPenalty: 699016257.85, outstanding: 699016257.85 },
-    { code: 'KANO', invoice: 1296079068.25, remitted: 797581062.37, txdxNetOff: 160365565.77, atfpPenalty: 0, outstanding: 0 },
-    { code: 'P/H', invoice: 1523086495.85, remitted: 977654133.24, txdxNetOff: 138438933.58, atfpPenalty: 0, outstanding: 0 },
-    { code: 'YOLA', invoice: 623198414.97, remitted: 473181590.63, txdxNetOff: 0, atfpPenalty: 0, outstanding: 0 },
   ],
   serviceProviders: [
     { name: 'ANCILLARY SERV.', invoice: 952343843.12, disbursed: 952343843.12, pipAmount: 0, txdxDeductions: 0, atfpPenalty: 0, outstanding: 0 },

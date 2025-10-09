@@ -20,21 +20,15 @@ import {
 } from 'lucide-react';
 import { formatCurrency } from '@/lib/utils/formatters';
 
-// Mock data based on NERC Regulatory Charge Disbursements
+// Mock data based on NERC Regulatory Charge Disbursements - Top 5 DISCOs
 const regulatoryData = {
   period: 'May 2025',
   discos: [
     { code: 'ABUJA', nercCharge: 490307863.60, disbursed: 490307863.60, outstanding: 0, status: 'paid' },
     { code: 'BENIN', nercCharge: 210691878.37, disbursed: 210691878.37, outstanding: 0, status: 'paid' },
     { code: 'EKO', nercCharge: 299313770.14, disbursed: 299313770.14, outstanding: 0, status: 'paid' },
-    { code: 'ENUGU', nercCharge: 167384918.25, disbursed: 167384918.25, outstanding: 0, status: 'paid' },
     { code: 'IBADAN', nercCharge: 251013363.36, disbursed: 251013363.36, outstanding: 0, status: 'paid' },
     { code: 'IKEJA', nercCharge: 344905797.82, disbursed: 344905797.82, outstanding: 0, status: 'paid' },
-    { code: 'JOS', nercCharge: 95737913.75, disbursed: 95737913.75, outstanding: 0, status: 'paid' },
-    { code: 'KADUNA', nercCharge: 93086416.69, disbursed: 93086416.69, outstanding: 0, status: 'paid' },
-    { code: 'KANO', nercCharge: 113583036.00, disbursed: 113583036.00, outstanding: 0, status: 'paid' },
-    { code: 'P/H', nercCharge: 141282923.19, disbursed: 141282923.19, outstanding: 0, status: 'paid' },
-    { code: 'YOLA', nercCharge: 65199982.43, disbursed: 65199982.43, outstanding: 0, status: 'paid' },
   ],
   nercAllocations: [
     { category: 'Regulatory Operations', amount: 850000000.00, percentage: 31.2 },
@@ -118,7 +112,7 @@ export default function RegulatoryDisbursementPage() {
                 <Building2 className="h-4 w-4 text-purple-600" />
                 <span className="text-2xl font-bold">{formatCurrency(totalDiscoCharge)}</span>
               </div>
-              <p className="text-xs text-muted-foreground mt-1">From 11 DISCOs</p>
+              <p className="text-xs text-muted-foreground mt-1">From 5 DISCOs</p>
             </CardContent>
           </Card>
 

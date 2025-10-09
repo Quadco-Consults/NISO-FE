@@ -408,16 +408,14 @@ export default function DiscoStatementsPage() {
               June 2025 Financial Cycle - Transmission Company of Nigeria (TCN)
             </CardTitle>
             <CardDescription>
-              Complete market settlement statement for all 11 DISCOs • Total: {formatCurrency(summary.grossInvoice)}
+              Complete market settlement statement for all 5 DISCOs • Total: {formatCurrency(summary.grossInvoice)}
             </CardDescription>
           </CardHeader>
           <CardContent>
             <Tabs defaultValue="summary" className="w-full">
-              <TabsList className="grid w-full grid-cols-4">
+              <TabsList className="grid w-full grid-cols-2">
                 <TabsTrigger value="summary">Summary</TabsTrigger>
                 <TabsTrigger value="energy-accounting">Table 1: Energy Accounting</TabsTrigger>
-                <TabsTrigger value="invoice-derivation">Table 2: Invoice Derivation</TabsTrigger>
-                <TabsTrigger value="rates">Table 3: Rates</TabsTrigger>
               </TabsList>
 
               {/* Summary Tab */}
@@ -436,11 +434,11 @@ export default function DiscoStatementsPage() {
                       </TableRow>
                     </TableHeader>
                     <TableBody>
-                      {juneCycle.discoSummaries.map((disco, index) => {
+                      {juneCycle.discoSummaries.slice(0, 5).map((disco, index) => {
                         const collectionRate = disco.totalInvoice > 0
                           ? ((disco.totalInflow / disco.totalInvoice) * 100).toFixed(1)
                           : '0.0';
-                        const discoCode = String.fromCharCode(65 + index); // A, B, C, etc.
+                        const discoCode = String.fromCharCode(65 + index); // A, B, C, D, E
 
                         return (
                           <TableRow key={disco.discoId}>
@@ -453,7 +451,7 @@ export default function DiscoStatementsPage() {
                               {formatCurrency(disco.shortfall)}
                             </TableCell>
                             <TableCell className="text-right">
-                              <Badge variant={Number(collectionRate) >= 80 ? 'default' : 'destructive'}>
+                              <Badge variant={Number(collectionRate) >= 95 ? 'default' : 'destructive'}>
                                 {collectionRate}%
                               </Badge>
                             </TableCell>
@@ -498,161 +496,30 @@ export default function DiscoStatementsPage() {
                         <TableHead className="w-[50px]">Code</TableHead>
                         <TableHead>DISCO</TableHead>
                         <TableHead className="text-right">Meter Reading<br/>Billing (kWh)</TableHead>
-                        <TableHead className="text-right">MYTO Excess<br/>Adjustment</TableHead>
-                        <TableHead className="text-right">SERDEF<br/>(kWh)</TableHead>
-                        <TableHead className="text-right bg-orange-50">TCN SERDEF<br/>(kWh)</TableHead>
-                        <TableHead className="text-right bg-yellow-50">Transmission<br/>Factor Billed or<br/>Loss Factor (7%)</TableHead>
+                        <TableHead className="text-right bg-yellow-50">Transmission<br/>Factor Billed or<br/>Loss Factor</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
-                      {juneCycle.discoSummaries.map((disco, index) => {
+                      {juneCycle.discoSummaries.slice(0, 5).map((disco, index) => {
                         const discoCode = String.fromCharCode(65 + index);
                         // Mock data for energy accounting - in real app, this would come from the service
                         const meterReading = (disco.grossInvoice / 45).toFixed(0); // Rough kWh estimate
+                        const transmissionFactor = (Number(meterReading) * 0.07).toFixed(0);
 
                         return (
                           <TableRow key={disco.discoId}>
                             <TableCell className="font-bold text-purple-600">{discoCode}</TableCell>
                             <TableCell className="font-medium">{disco.discoName}</TableCell>
                             <TableCell className="text-right font-mono">{Number(meterReading).toLocaleString()}</TableCell>
-                            <TableCell className="text-right font-mono">-</TableCell>
-                            <TableCell className="text-right font-mono">-</TableCell>
-                            <TableCell className="text-right font-mono bg-orange-50">-</TableCell>
-                            <TableCell className="text-right font-mono bg-yellow-50">-</TableCell>
+                            <TableCell className="text-right font-mono bg-yellow-50">{Number(transmissionFactor).toLocaleString()}</TableCell>
                           </TableRow>
                         );
                       })}
                     </TableBody>
                   </Table>
                 </div>
-                <p className="text-sm text-muted-foreground mt-2">
-                  * MYTO = Multi-Year Tariff Order | SERDEF = Service Deficiency
-                </p>
-              </TabsContent>
-
-              {/* Table 2: Invoice Derivation */}
-              <TabsContent value="invoice-derivation" className="mt-4">
-                <div className="rounded-md border overflow-x-auto">
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead className="w-[50px]">Code</TableHead>
-                        <TableHead>DISCO</TableHead>
-                        <TableHead className="text-right">Meter Reading<br/>Billing (Naira)</TableHead>
-                        <TableHead className="text-right">Contract Excess<br/>Adjustment (Naira)</TableHead>
-                        <TableHead className="text-right bg-blue-50">Loss of Revenue<br/>Compensation:<br/>TCN to DisCo</TableHead>
-                        <TableHead className="text-right bg-orange-50">Loss of Revenue<br/>Compensation:<br/>TCN to Service<br/>Providers (Due)</TableHead>
-                        <TableHead className="text-right bg-yellow-50">Transmission<br/>Loss Factor (7%)<br/>Compensation</TableHead>
-                        <TableHead className="text-right bg-purple-50">Genco Interface<br/>Liquidated<br/>Damages to<br/>NBET</TableHead>
-                        <TableHead className="text-right">Readers Market<br/>Indebtedness<br/>(Naira)</TableHead>
-                        <TableHead className="text-right font-semibold">Total (Naira)</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {juneCycle.discoSummaries.map((disco, index) => {
-                        const discoCode = String.fromCharCode(65 + index);
-
-                        return (
-                          <TableRow key={disco.discoId}>
-                            <TableCell className="font-bold text-purple-600">{discoCode}</TableCell>
-                            <TableCell className="font-medium">{disco.discoName}</TableCell>
-                            <TableCell className="text-right font-mono">{formatCurrency(disco.grossInvoice * 0.85)}</TableCell>
-                            <TableCell className="text-right font-mono">-</TableCell>
-                            <TableCell className="text-right font-mono bg-blue-50">-</TableCell>
-                            <TableCell className="text-right font-mono bg-orange-50">-</TableCell>
-                            <TableCell className="text-right font-mono bg-yellow-50">-</TableCell>
-                            <TableCell className="text-right font-mono bg-purple-50">-</TableCell>
-                            <TableCell className="text-right font-mono">-</TableCell>
-                            <TableCell className="text-right font-mono font-semibold">{formatCurrency(disco.grossInvoice)}</TableCell>
-                          </TableRow>
-                        );
-                      })}
-                      <TableRow className="bg-muted/50 font-bold">
-                        <TableCell></TableCell>
-                        <TableCell>TOTAL</TableCell>
-                        <TableCell className="text-right">{formatCurrency(summary.grossInvoice * 0.85)}</TableCell>
-                        <TableCell className="text-right">-</TableCell>
-                        <TableCell className="text-right bg-blue-50">-</TableCell>
-                        <TableCell className="text-right bg-orange-50">-</TableCell>
-                        <TableCell className="text-right bg-yellow-50">-</TableCell>
-                        <TableCell className="text-right bg-purple-50">-</TableCell>
-                        <TableCell className="text-right">-</TableCell>
-                        <TableCell className="text-right">{formatCurrency(summary.grossInvoice)}</TableCell>
-                      </TableRow>
-                    </TableBody>
-                  </Table>
-                </div>
-              </TabsContent>
-
-              {/* Table 3: Rates Used */}
-              <TabsContent value="rates" className="mt-4">
-                <div className="rounded-md border overflow-x-auto">
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead className="w-[50px]">Code</TableHead>
-                        <TableHead>DISCO</TableHead>
-                        <TableHead className="text-right">Meter Reading<br/>Billing (Naira)</TableHead>
-                        <TableHead className="text-right">MYTO Excess<br/>Adjustment</TableHead>
-                        <TableHead className="text-right">Loss of Revenue<br/>Compensation:<br/>DisCo to TSP</TableHead>
-                        <TableHead className="text-right bg-orange-50">Loss of Revenue<br/>Compensation:<br/>TCN to Service<br/>Providers (Due)</TableHead>
-                        <TableHead className="text-right bg-yellow-50">Transmission<br/>Loss Factor<br/>Compensation</TableHead>
-                        <TableHead className="text-right">Genco Interface<br/>Liquidated<br/>Damages to NBET</TableHead>
-                        <TableHead className="text-right">Total (Naira)</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {juneCycle.discoSummaries.map((disco, index) => {
-                        const discoCode = String.fromCharCode(65 + index);
-
-                        return (
-                          <TableRow key={disco.discoId}>
-                            <TableCell className="font-bold text-purple-600">{discoCode}</TableCell>
-                            <TableCell className="font-medium">{disco.discoName}</TableCell>
-                            <TableCell className="text-right font-mono">6.46</TableCell>
-                            <TableCell className="text-right font-mono">-</TableCell>
-                            <TableCell className="text-right font-mono">6.46</TableCell>
-                            <TableCell className="text-right font-mono bg-orange-50">(112.87)</TableCell>
-                            <TableCell className="text-right font-mono bg-yellow-50">112.87</TableCell>
-                            <TableCell className="text-right font-mono">-</TableCell>
-                            <TableCell className="text-right font-mono">6.46</TableCell>
-                          </TableRow>
-                        );
-                      })}
-                      <TableRow className="bg-muted/50 font-bold">
-                        <TableCell></TableCell>
-                        <TableCell>Total</TableCell>
-                        <TableCell className="text-right">6.46</TableCell>
-                        <TableCell className="text-right">-</TableCell>
-                        <TableCell className="text-right">6.46</TableCell>
-                        <TableCell className="text-right bg-orange-50">(58.53)</TableCell>
-                        <TableCell className="text-right bg-yellow-50">112.87</TableCell>
-                        <TableCell className="text-right">-</TableCell>
-                        <TableCell className="text-right">6.46</TableCell>
-                      </TableRow>
-                    </TableBody>
-                  </Table>
-                </div>
-                <p className="text-sm text-muted-foreground mt-2">
-                  * All rates are in Naira per kWh
-                </p>
               </TabsContent>
             </Tabs>
-
-            {/* Explanatory Notes Section */}
-            <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-              <h3 className="font-semibold text-blue-900 mb-2 flex items-center gap-2">
-                <FileText className="h-4 w-4" />
-                Explanatory Notes to Invoice
-              </h3>
-              <div className="text-sm text-blue-800 space-y-1">
-                <p>• TSP, MO, SO, AS, NBET and Regulatory Charges determined in line with Table 1 (Transmission and Admin Charges Feb - Dec 2024)</p>
-                <p>• Section 8 & 9 of NERC/AS/001I provides that Naira amount of TLF GainLoss shall be based on Average Cost of Generation</p>
-                <p>• Table 1 in Explanatory Section gives measure of Energy at what the Disco was unable to take in kWh</p>
-                <p>• MYTO Allocation = Metered Energy - Excess kWh intake + Disco Deficit + Disco Excess</p>
-                <p className="font-semibold mt-2">View full statement for complete 18-point explanatory notes with NERC references</p>
-              </div>
-            </div>
           </CardContent>
         </Card>
       )}

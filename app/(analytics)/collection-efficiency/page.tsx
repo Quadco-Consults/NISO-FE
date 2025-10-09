@@ -33,7 +33,7 @@ const collectionEfficiencyData = {
     totalShortfall: 3637735700.64,
   },
 
-  // DISCO Performance (sorted by collection rate)
+  // DISCO Performance (sorted by collection rate) - Top 5 DISCOs
   discoPerformance: [
     {
       discoCode: 'IKEJA',
@@ -84,66 +84,6 @@ const collectionEfficiencyData = {
       shortfall: 338989628.77,
       trend: 'stable' as const,
       previousRate: 0.7834,
-    },
-    {
-      discoCode: 'P/H',
-      discoName: 'Port Harcourt Electricity',
-      invoiced: 1068123205.45,
-      collected: 833496710.00,
-      collectionRate: 0.7803,
-      shortfall: 234626495.45,
-      trend: 'improving' as const,
-      previousRate: 0.7456,
-    },
-    {
-      discoCode: 'ENUGU',
-      discoName: 'Enugu Electricity',
-      invoiced: 1265421916.59,
-      collected: 967845623.00,
-      collectionRate: 0.7649,
-      shortfall: 297576293.59,
-      trend: 'declining' as const,
-      previousRate: 0.7923,
-    },
-    {
-      discoCode: 'KANO',
-      discoName: 'Kano Electricity',
-      invoiced: 858877910.00,
-      collected: 644893547.00,
-      collectionRate: 0.7509,
-      shortfall: 213984363.00,
-      trend: 'stable' as const,
-      previousRate: 0.7498,
-    },
-    {
-      discoCode: 'KADUNA',
-      discoName: 'Kaduna Electric',
-      invoiced: 704149700.24,
-      collected: 503305740.00,
-      collectionRate: 0.7148,
-      shortfall: 200843960.24,
-      trend: 'declining' as const,
-      previousRate: 0.7567,
-    },
-    {
-      discoCode: 'JOS',
-      discoName: 'Jos Electricity',
-      invoiced: 723057150.68,
-      collected: 493547720.00,
-      collectionRate: 0.6825,
-      shortfall: 229509430.68,
-      trend: 'declining' as const,
-      previousRate: 0.7234,
-    },
-    {
-      discoCode: 'YOLA',
-      discoName: 'Yola Electricity',
-      invoiced: 492845332.97,
-      collected: 336844805.40,
-      collectionRate: 0.6835,
-      shortfall: 156000527.57,
-      trend: 'improving' as const,
-      previousRate: 0.6543,
     },
   ],
 
@@ -515,9 +455,9 @@ export default function CollectionEfficiencyPage() {
                   <h4 className="font-semibold text-blue-900 mb-2">Performance Insights</h4>
                   <ul className="text-sm text-blue-800 space-y-1">
                     <li>• <strong>Top 3 performers:</strong> IKEJA (86.87%), EKO (86.04%), ABUJA (85.13%)</li>
-                    <li>• <strong>Bottom 3 performers:</strong> JOS (68.25%), YOLA (68.35%), KADUNA (71.48%)</li>
+                    <li>• <strong>Lowest performer:</strong> BENIN (78.72%)</li>
                     <li>• <strong>Improving DISCOs:</strong> {collectionEfficiencyData.discoPerformance.filter(d => d.trend === 'improving').length} DISCOs showing upward trend</li>
-                    <li>• <strong>Declining DISCOs:</strong> {collectionEfficiencyData.discoPerformance.filter(d => d.trend === 'declining').length} DISCOs require intervention</li>
+                    <li>• <strong>Declining DISCOs:</strong> {collectionEfficiencyData.discoPerformance.filter(d => d.trend === 'declining').length} DISCO requires intervention</li>
                   </ul>
                 </div>
               </CardContent>
@@ -691,13 +631,13 @@ export default function CollectionEfficiencyPage() {
           </CardHeader>
           <CardContent>
             <div className="space-y-3">
-              <div className="flex items-start gap-3 p-3 bg-red-50 border border-red-200 rounded-lg">
-                <AlertCircle className="h-5 w-5 text-red-600 mt-0.5" />
+              <div className="flex items-start gap-3 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+                <AlertCircle className="h-5 w-5 text-yellow-600 mt-0.5" />
                 <div>
-                  <h5 className="font-semibold text-red-900">Urgent: Address Underperformers</h5>
-                  <p className="text-sm text-red-800">
-                    JOS (68.25%) and YOLA (68.35%) require immediate intervention. Consider implementing
-                    payment plans, enhanced enforcement, or debt collection support.
+                  <h5 className="font-semibold text-yellow-900">Monitor Performance</h5>
+                  <p className="text-sm text-yellow-800">
+                    BENIN (78.72%) is the lowest performer among the selected DISCOs. Continue monitoring
+                    collection efforts and consider targeted interventions to improve performance.
                   </p>
                 </div>
               </div>
@@ -729,8 +669,8 @@ export default function CollectionEfficiencyPage() {
                 <div>
                   <h5 className="font-semibold text-blue-900">Monitor Declining Trends</h5>
                   <p className="text-sm text-blue-800">
-                    4 DISCOs show declining trends (IBADAN, ENUGU, KADUNA, JOS). Conduct root cause analysis
-                    and implement corrective measures before performance deteriorates further.
+                    IBADAN shows a declining trend despite strong performance. Conduct root cause analysis
+                    and implement corrective measures to maintain collection efficiency.
                   </p>
                 </div>
               </div>

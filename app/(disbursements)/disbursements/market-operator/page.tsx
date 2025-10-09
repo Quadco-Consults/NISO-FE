@@ -20,21 +20,15 @@ import {
 } from 'lucide-react';
 import { formatCurrency } from '@/lib/utils/formatters';
 
-// Mock data based on Market Operator Disbursement Schedule
+// Mock data based on Market Operator Disbursement Schedule - Top 5 DISCOs
 const marketOperatorData = {
   period: 'May 2025',
   discos: [
     { code: 'ABUJA', invoice: 185328724.35, disbursed: 185328724.35, outstanding: 0, status: 'paid' },
     { code: 'BENIN', invoice: 79609895.90, disbursed: 79609895.90, outstanding: 0, status: 'paid' },
     { code: 'EKO', invoice: 113103164.81, disbursed: 113103164.81, outstanding: 0, status: 'paid' },
-    { code: 'ENUGU', invoice: 63271094.83, disbursed: 63271094.83, outstanding: 0, status: 'paid' },
     { code: 'IBADAN', invoice: 94886767.69, disbursed: 94886767.69, outstanding: 0, status: 'paid' },
     { code: 'IKEJA', invoice: 130342554.08, disbursed: 130342554.08, outstanding: 0, status: 'paid' },
-    { code: 'JOS', invoice: 36152867.53, disbursed: 36152867.53, outstanding: 0, status: 'paid' },
-    { code: 'KADUNA', invoice: 35207485.01, disbursed: 35207485.01, outstanding: 0, status: 'paid' },
-    { code: 'KANO', invoice: 42943895.50, disbursed: 42943895.50, outstanding: 0, status: 'paid' },
-    { code: 'P/H', invoice: 53406160.27, disbursed: 53406160.27, outstanding: 0, status: 'paid' },
-    { code: 'YOLA', invoice: 24642266.65, disbursed: 24642266.65, outstanding: 0, status: 'paid' },
   ],
   receivables: [
     { source: 'NBET Receivables', amount: 491733501.11, collected: 491733501.11, collectionRate: 100 },
