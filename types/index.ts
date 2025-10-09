@@ -1713,3 +1713,183 @@ export interface GenerationShortage {
 
   notes: string;
 }
+
+// ==========================================
+// PAYMENT ALLOCATION SYSTEM
+// ==========================================
+
+// Allocation method types
+export type AllocationMethod = 'pro-rata' | 'priority-waterfall' | 'hybrid';
+
+// Service Provider Priority Configuration
+export interface ServiceProviderPriority {
+  provider: string;
+  priority: number; // 1 = highest priority
+  protectedPercentage?: number; // For hybrid method (0-100)
+  minimumAmount?: number; // Minimum amount to allocate
+}
+
+// Allocation Configuration
+export interface AllocationConfig {
+  method: AllocationMethod;
+  priorities?: ServiceProviderPriority[];
+
+  // Deduction rates
+  txdxRate: number; // Default: 0.05 (5%)
+  pipNisoRate: number; // Default: 0.10 (10%)
+  pipTspRate: number; // Default: 0.10 (10%)
+
+  // ATFP Penalty splits
+  atfpSoRate: number; // Default: 0.5504 (55.04%)
+  atfpTspRate: number; // Default: 0.4670 (46.70%)
+}
+
+// Deduction Breakdown
+export interface DeductionBreakdown {
+  txdxDeduction: number;
+  pipNisoDeduction: number;
+  pipTspDeduction: number;
+  atfpSoPenalty: number;
+  atfpTspPenalty: number;
+  totalDeductions: number;
+}
+
+// Service Provider Allocation Result
+export interface ServiceProviderAllocation {
+  provider: string;
+  invoiceAmount: number;
+  allocatedAmount: number;
+  shortfall: number;
+  allocationPercentage: number; // % of invoice amount paid
+  priority?: number;
+}
+
+// Complete Allocation Result
+export interface AllocationResult {
+  discoCode: string;
+  period: string;
+
+  // Input amounts
+  totalInvoice: number;
+  collectedAmount: number;
+  collectionRate: number;
+
+  // Deductions
+  deductions: DeductionBreakdown;
+
+  // Net amount available for distribution
+  netAvailableForDistribution: number;
+
+  // Service provider allocations
+  allocations: ServiceProviderAllocation[];
+
+  // Summary
+  totalAllocated: number;
+  totalShortfall: number;
+  allocationMethod: AllocationMethod;
+
+  // Validation
+  isBalanced: boolean;
+  validationErrors: string[];
+
+  // Timestamps
+  calculatedAt: Date;
+}
+
+// Shortfall Allocation Tracking
+export interface ShortfallAllocation {
+  id: string;
+  discoCode: string;
+  period: string;
+  serviceProvider: string;
+  invoiceAmount: number;
+  allocatedAmount: number;
+  shortfallAmount: number;
+  shortfallPercentage: number;
+  status: 'outstanding' | 'partially-paid' | 'settled';
+  createdAt: Date;
+  settledAt?: Date;
+}
+
+// Payment History Tracking
+export interface PaymentHistory {
+  id: string;
+  discoCode: string;
+  discoName: string;
+  period: string;
+  invoiceAmount: number;
+  collectedAmount: number;
+  collectionRate: number;
+  allocationMethod: AllocationMethod;
+  createdAt: Date;
+}
+
+// Service Provider Receivables
+export interface ServiceProviderReceivables {
+  id: string;
+  serviceProvider: string;
+  period: string;
+
+  // Amounts
+  totalInvoiced: number;
+  totalReceived: number;
+  totalOutstanding: number;
+
+  // Aging breakdown
+  current: number;
+  overdue30: number;
+  overdue60: number;
+  overdue90: number;
+  overdue120Plus: number;
+
+  // Performance
+  averageCollectionRate: number;
+  lastPaymentDate?: Date;
+  lastPaymentAmount?: number;
+
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+// Collection Efficiency Report
+export interface CollectionEfficiencyReport {
+  id: string;
+  period: string;
+
+  // Overall metrics
+  totalInvoiced: number;
+  totalCollected: number;
+  overallCollectionRate: number;
+
+  // By DISCO breakdown
+  discoPerformance: {
+    discoCode: string;
+    discoName: string;
+    invoiced: number;
+    collected: number;
+    collectionRate: number;
+    trend: 'improving' | 'declining' | 'stable';
+  }[];
+
+  // Service Provider Impact
+  serviceProviderImpact: {
+    provider: string;
+    expectedAmount: number;
+    actualAmount: number;
+    shortfall: number;
+    shortfallPercentage: number;
+  }[];
+
+  // Trends
+  collectionTrend: {
+    period: string;
+    collectionRate: number;
+    totalCollected: number;
+  }[];
+
+  // Top performers and underperformers
+  topPerformers: string[]; // DISCO codes
+  underperformers: string[]; // DISCO codes
+
+  createdAt: Date;
+}
