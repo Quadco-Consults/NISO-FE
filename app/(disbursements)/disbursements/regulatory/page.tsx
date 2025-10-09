@@ -230,7 +230,7 @@ export default function RegulatoryDisbursementPage() {
                     <div>
                       <h4 className="font-semibold text-purple-900 mb-1">NERC Regulatory Charge</h4>
                       <p className="text-sm text-purple-800">
-                        The NERC charge funds the Nigerian Electricity Regulatory Commission's operations,
+                        The NERC charge funds the Nigerian Electricity Regulatory Commission&apos;s operations,
                         including market monitoring, consumer protection, standards enforcement, and regulatory oversight.
                       </p>
                     </div>

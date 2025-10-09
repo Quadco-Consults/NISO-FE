@@ -20,7 +20,7 @@ import {
 import { formatCurrency } from '@/lib/utils/formatters';
 
 // Mock data based on ZUNGERU PAYMENT REPORT
-const zungeru PaymentsData = {
+const zungeruPaymentsData = {
   period: 'May 2025',
   discos: [
     { code: 'ABUJA', invoice: 2322212540.70, remitted: 0, outstanding: 0 },

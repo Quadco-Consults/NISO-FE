@@ -1336,6 +1336,13 @@ export interface ComprehensiveDiscoFinancialSummary {
   discoCode: string;
   discoName: string;
 
+  // Direct summary fields (for convenience)
+  grossInvoice: number;
+  netInvoice: number;
+  totalInvoice: number;
+  totalInflow: number;
+  shortfall: number;
+
   // Invoice breakdown
   invoiceLineItem: DiscoInvoiceLineItem;
 
